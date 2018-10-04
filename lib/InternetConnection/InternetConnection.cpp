@@ -58,3 +58,8 @@ bool InternetConnection::initializeBlynk(void)
     Serial.println(Blynk.connected() ? "Blynk connected" : "Timeout on Blynk or no internet connection");
     return Blynk.connected();
 }
+
+void InternetConnection::runBlynk(void)
+{
+    Blynk.run();
+}
