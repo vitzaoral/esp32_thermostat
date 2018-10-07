@@ -1,10 +1,12 @@
 #include <Arduino.h>
 #include <InternetConnection.h>
 #include <MeteoData.h>
+#include <Display.h>
 #include <Ticker.h>
 
 InternetConnection connection;
 MeteoData meteoData;
+Display display;
 
 const int readMeteoDataInterval = 10000;
 void readMeteoData();
@@ -24,6 +26,7 @@ void initializeInternetConnection()
 void readMeteoData()
 {
     meteoData.setData();
+    display.printMeteoData(meteoData);
 }
 
 void startTimers()
