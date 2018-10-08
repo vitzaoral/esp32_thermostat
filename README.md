@@ -1,6 +1,6 @@
-# esp32_thermostat
+# ESP32 thermostat witch touch LCD
 
-WiFi thermostat based on ESP32 (Espressif WROOM-32 Developer Kit), using SHT3X(SHT31-D) temperature/humidity sensor and ILI 9341 TFT LCD Touch display. Data are sent to Thingspeak server and Blynk. Thermostat can be controlled by the Blynk application or directly by the touch on the LCD.  Project is free to use, coded in C++, created in Visual Code with [PlatfomIO IDE](http://docs.platformio.org/en/latest/ide/vscode.html). 
+WiFi thermostat based on the ESP32 (Espressif WROOM-32 Developer Kit), using SHT3X(SHT31-D) temperature/humidity sensor and ILI 9341 TFT LCD Touch display. Data are sent to the Thingspeak server and to the Blynk. Thermostat can be controlled by the Blynk application or directly by touch on the LCD. Project is free to use, coded in C++, created in Visual Code with [PlatfomIO IDE](http://docs.platformio.org/en/latest/ide/vscode.html). 
 
 **The project is not yet complete and is still being developed!**
 
@@ -27,11 +27,10 @@ I'm using awasome [TFT_eSPI](https://github.com/Bodmer/TFT_eSPI) library from Bo
 #define TFT_MISO 19
 #define TFT_MOSI 23
 #define TFT_SCLK 18
-#define TFT_CS    15  // Chip select control pin
+#define TFT_CS   15  // Chip select control pin
 #define TFT_DC    2  // Data Command control pin
 #define TFT_RST  -1  // Set TFT_RST to -1 if display RESET is connected to ESP32 board RST
-
-#define TOUCH_CS 4 // Chip select pin (T_CS) of touch screen
+#define TOUCH_CS  4  // Chip select pin (T_CS) of touch screen
 ```
 
 For wires connection between the display and the ESP32 look to the schema..
