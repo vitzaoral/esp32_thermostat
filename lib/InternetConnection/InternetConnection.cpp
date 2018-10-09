@@ -31,7 +31,7 @@ bool InternetConnection::initialize(void)
     int i = 0;
     while (WiFi.status() != WL_CONNECTED)
     {
-        delay(500);
+        delay(1000);
         Serial.print(".");
         if (i == timeout)
         {
@@ -65,15 +65,12 @@ bool InternetConnection::sendDataToBlynk(MeteoData meteoData)
     }
 }
 
-bool InternetConnection::setOutdoorMeteoData(MeteoData &meteoData)
+float InternetConnection::getFloatFromBlynkUrl(String blynkAuth, int virtualBlynkPin)
 {
-    bool successful = false;
-
-    // V16 - temperature, V17 - humidity
     if ((WiFi.status() == WL_CONNECTED))
     {
         HTTPClient http;
-        http.begin("http://blynk-cloud.com:8080/" + String(settings.blynkAuthOutdoor) + "/get/V16");
+        http.begin("http://blynk-cloud.com:8080/" + blynkAuth + "/get/V" + virtualBlynkPin);
         int httpCode = http.GET();
 
         if (httpCode == 200)
@@ -82,42 +79,29 @@ bool InternetConnection::setOutdoorMeteoData(MeteoData &meteoData)
             payload.replace("[", "");
             payload.replace("]", "");
             payload.replace("\"", "");
-
-            float temperature = payload.toFloat();
-            Serial.print(temperature);
-            Serial.println("°C - outdoor data temperature");
-
-            http.begin("http://blynk-cloud.com:8080/" + String(settings.blynkAuthOutdoor) + "/get/V17");
-            httpCode = http.GET();
-            if (httpCode == 200)
-            {
-                payload = http.getString();
-                payload.replace("[", "");
-                payload.replace("]", "");
-                payload.replace("\"", "");
-
-                float humidity = payload.toFloat();
-                meteoData.setOutdoorData(temperature, humidity);
-
-                successful = true;
-                Serial.print(humidity);
-                Serial.println("% - outdoor data humidity");
-            }
+            http.end();
+            return payload.toFloat();
         }
         else
         {
-            Serial.print("Error on HTTP request for outdoor data, httpCode: ");
+            Serial.print("Error on HTTP request, httpCode: ");
             Serial.println(httpCode);
+            http.end();
         }
-        http.end();
     }
-    return successful;
+    return NULL;
 }
 
-bool InternetConnection::setBedroomMeteoData(MeteoData meteoData)
+void InternetConnection::setOutdoorMeteoData(MeteoData &meteoData)
+{
+    float temperature = getFloatFromBlynkUrl(String(settings.blynkAuthOutdoor), 16);
+    float humidity = getFloatFromBlynkUrl(String(settings.blynkAuthOutdoor), 17);
+    meteoData.setOutdoorData(temperature, humidity);
+}
+
+void InternetConnection::setBedroomMeteoData(MeteoData meteoData)
 {
     // TODO: not implemented
-    return false;
 }
 
 // Initialize connection to Blynk. Return true if connection is successful.

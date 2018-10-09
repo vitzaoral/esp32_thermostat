@@ -7,14 +7,17 @@
 
 class InternetConnection
 {
-  public:
-    bool initialize(void);
-    bool initializeBlynk(void);
-    bool sendDataToBlynk(MeteoData);
-    bool setOutdoorMeteoData(MeteoData&);
-    bool setBedroomMeteoData(MeteoData);
-    //void setStatusToBlynk(bool, String, int);
-    void runBlynk();
+public:
+  bool initialize(void);
+  bool initializeBlynk(void);
+  bool sendDataToBlynk(MeteoData);
+  void setOutdoorMeteoData(MeteoData &);
+  void setBedroomMeteoData(MeteoData);
+  //void setStatusToBlynk(bool, String, int);
+  void runBlynk();
+
+private:
+  float getFloatFromBlynkUrl(String, int);
 };
 
 #endif

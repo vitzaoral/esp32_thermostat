@@ -38,10 +38,8 @@ void readMeteoData()
 
 void readOutdoorMeteoData()
 {
-    if (connection.setOutdoorMeteoData(meteoData))
-    {
-        display.printMeteoData(meteoData);
-    }
+    connection.setOutdoorMeteoData(meteoData);
+    display.printMeteoData(meteoData);
 }
 
 void sendDataToBlynk()
