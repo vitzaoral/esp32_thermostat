@@ -9,8 +9,15 @@ MeteoData meteoData;
 Display display;
 
 const int readMeteoDataInterval = 10000;
+const int readOutdoorMeteoDataInterval = 30000;
+const int sendDataToBlynkInterval = 60000;
+
 void readMeteoData();
+void readOutdoorMeteoData();
+void sendDataToBlynk();
 Ticker timerReadMeteoData(readMeteoData, readMeteoDataInterval);
+Ticker timerSendDataToBlynk(sendDataToBlynk, sendDataToBlynkInterval);
+Ticker timerReadOutdoorMeteoData(readOutdoorMeteoData, readOutdoorMeteoDataInterval);
 
 // Connections to APIs are OK
 bool apisAreConnected = false;
@@ -29,14 +36,49 @@ void readMeteoData()
     display.printMeteoData(meteoData);
 }
 
+void readOutdoorMeteoData()
+{
+    if (connection.setOutdoorMeteoData(meteoData))
+    {
+        display.printMeteoData(meteoData);
+    }
+}
+
+void sendDataToBlynk()
+{
+    if (apisAreConnected)
+    {
+        bool successBlynk = connection.sendDataToBlynk(meteoData);
+
+        if (successBlynk)
+        {
+            Serial.println("Data was sent to Blynk");
+        }
+        else
+        {
+            Serial.println("No internet connection, try initialize connection");
+            apisAreConnected = false;
+            initializeInternetConnection();
+        }
+    }
+    else
+    {
+        initializeInternetConnection();
+    }
+}
+
 void startTimers()
 {
     timerReadMeteoData.start();
+    timerReadOutdoorMeteoData.start();
+    timerSendDataToBlynk.start();
 }
 
 void updateTimers()
 {
     timerReadMeteoData.update();
+    timerReadOutdoorMeteoData.update();
+    timerSendDataToBlynk.update();
 }
 
 void setup()

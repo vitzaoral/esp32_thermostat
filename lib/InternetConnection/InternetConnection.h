@@ -2,14 +2,17 @@
 #define __InternetConnection_H
 
 #include <WiFi.h>
-//#include <MeteoData.h>
+#include <HTTPClient.h>
+#include <MeteoData.h>
 
 class InternetConnection
 {
   public:
     bool initialize(void);
     bool initializeBlynk(void);
-    //void sendDataToBlynk(MeteoData);
+    bool sendDataToBlynk(MeteoData);
+    bool setOutdoorMeteoData(MeteoData&);
+    bool setBedroomMeteoData(MeteoData);
     //void setStatusToBlynk(bool, String, int);
     void runBlynk();
 };
