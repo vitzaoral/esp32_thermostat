@@ -35,6 +35,9 @@ I'm using awasome [TFT_eSPI](https://github.com/Bodmer/TFT_eSPI) library from Bo
 
 For wires connection between the display and the ESP32 look to the schema..
 
+### 5V relay vs 3.3V ESP32 pins
+When you have 5V relay, there is a need to think about 3.3V ESP32 pins. You can't just connect ESP32 pin to source pin of the relay, it would not work. One way is insert MOSFET between ESP32 pin and source pin of the relay. Other solution is just use the 3.3V relay, or solid state relay. More information is [here](https://electronics.stackexchange.com/a/213058).
+
 ### Currents list:
 * [ESP32](https://www.aliexpress.com/item/ESP-32-ESP-32S-Development-Board-WiFi-Bluetooth-Ultra-Low-Power-Consumption-Dual-Cores-ESP32-Board/32796032726.html) Espressif WROOM-32 Developer Kit
 * [HLK-PM01](https://www.aliexpress.com/item/Free-Shippingn-HLK-PM01-AC-DC-220V-to-5V-mini-power-supply-module-intelligent-household-switch/32319515750.html) 220v to 5v power supply

@@ -1,10 +1,11 @@
 #include "Thermostat.h"
 
 // relay pin
-const int relayPinAddress = 5;
+const int relayPinAddress = 16;
 
-void Thermostat::initialize()
+Thermostat::Thermostat()
 {
     // set pinmodes to LED
     pinMode(relayPinAddress, OUTPUT);
+    Serial.println("init thermostat");
 }

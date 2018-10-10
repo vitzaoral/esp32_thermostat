@@ -15,6 +15,15 @@ const char *blynkAuth = settings.blynkAuth;
 // number of attempts to connecting WIFI,API etc.
 const int timeout = 10;
 
+// Enable/disable thermostat, set value to EEPROM to address 1
+BLYNK_WRITE(V0)
+{
+    // param.asInt() ? setToEEPROM(1, true) : setToEEPROM(1, false);
+    // InternetConnection::callThermostatControll();
+    param.asInt() ? digitalWrite(16, HIGH) : digitalWrite(16, LOW);
+    Serial.println("BLYNK_WRITE");
+}
+
 // Initialize WiFi connection. Return true if connection is successful.
 bool InternetConnection::initialize(void)
 {
@@ -89,7 +98,7 @@ float InternetConnection::getFloatFromBlynkUrl(String blynkAuth, int virtualBlyn
             http.end();
         }
     }
-    return NULL;
+    return NAN;
 }
 
 void InternetConnection::setOutdoorMeteoData(MeteoData &meteoData)

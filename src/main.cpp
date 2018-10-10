@@ -1,12 +1,14 @@
 #include <Arduino.h>
 #include <InternetConnection.h>
 #include <MeteoData.h>
+#include <Thermostat.h>
 #include <Display.h>
 #include <Ticker.h>
 
 InternetConnection connection;
 MeteoData meteoData;
 Display display;
+Thermostat thermostat;
 
 const int readMeteoDataInterval = 10000;
 const int readOutdoorMeteoDataInterval = 30000;
