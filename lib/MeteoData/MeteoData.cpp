@@ -46,8 +46,15 @@ void MeteoData::setOutdoorData(float temperature, float humidity)
 
 void MeteoData::setBedroomData(float temperature, float humidity)
 {
-    bedroomTemperature = temperature;
-    bedroomHumidity = humidity;
+    if (temperature && humidity)
+    {
+        bedroomTemperature = temperature;
+        bedroomHumidity = humidity;
+        Serial.print(temperature);
+        Serial.println("°C - outdoor data temperature");
+        Serial.print(humidity);
+        Serial.println("% - outdoor data humidity");
+    }
 }
 
 bool MeteoData::dataAreValid(void)

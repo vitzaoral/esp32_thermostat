@@ -5,6 +5,8 @@
 // Blynk Pins:
 // V1 - shtTemperature
 // V2 - shtHumidity
+// V3 - WiFi IP address
+// V4 - WiFi rssi
 
 Settings settings;
 
@@ -65,7 +67,8 @@ bool InternetConnection::sendDataToBlynk(MeteoData meteoData)
     {
         Blynk.virtualWrite(V1, meteoData.shtTemperature);
         Blynk.virtualWrite(V2, meteoData.shtHumidity);
-        Blynk.run();
+        Blynk.virtualWrite(V3, WiFi.localIP().toString());
+        Blynk.virtualWrite(V4, WiFi.RSSI());
         return true;
     }
     else
@@ -103,14 +106,16 @@ float InternetConnection::getFloatFromBlynkUrl(String blynkAuth, int virtualBlyn
 
 void InternetConnection::setOutdoorMeteoData(MeteoData &meteoData)
 {
-    float temperature = getFloatFromBlynkUrl(String(settings.blynkAuthOutdoor), 16);
-    float humidity = getFloatFromBlynkUrl(String(settings.blynkAuthOutdoor), 17);
+    float temperature = getFloatFromBlynkUrl(String(settings.blynkAuthOutdoor), V16);
+    float humidity = getFloatFromBlynkUrl(String(settings.blynkAuthOutdoor), V17);
     meteoData.setOutdoorData(temperature, humidity);
 }
 
-void InternetConnection::setBedroomMeteoData(MeteoData meteoData)
+void InternetConnection::setBedroomMeteoData(MeteoData &meteoData)
 {
-    // TODO: not implemented
+    float temperature = getFloatFromBlynkUrl(String(settings.blynkAuthBedroom), V1);
+    float humidity = getFloatFromBlynkUrl(String(settings.blynkAuthBedroom), V2);
+    meteoData.setBedroomData(temperature, humidity);
 }
 
 // Initialize connection to Blynk. Return true if connection is successful.

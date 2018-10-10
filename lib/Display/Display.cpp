@@ -25,7 +25,12 @@ void Display::printMeteoData(MeteoData data)
     tft.drawString("Vlhkost: " + String(data.shtHumidity) + "%", 160, 50, GFXFF); // Print the string name of the font
 
     tft.setTextColor(TFT_RED, TFT_BLACK);
-    tft.drawString("Teplota venku: " + String(data.outdoorTemperature) + "°C", 160, 110, GFXFF); // Print the string name of the font
+    tft.drawString("Teplota loznice: " + String(data.bedroomTemperature) + "°C", 160, 100, GFXFF); // Print the string name of the font
     tft.setTextColor(TFT_BLUE, TFT_BLACK);
-    tft.drawString("Vlhkost venku: " + String(data.outdoorHumidity) + "%", 160, 140, GFXFF); // Print the string name of the font
+    tft.drawString("Vlhkost loznice: " + String(data.bedroomHumidity) + "%", 160, 130, GFXFF); // Print the string name of the font
+
+    tft.setTextColor(TFT_RED, TFT_BLACK);
+    tft.drawString("Teplota venku: " + String(data.outdoorTemperature) + "°C", 160, 180, GFXFF); // Print the string name of the font
+    tft.setTextColor(TFT_BLUE, TFT_BLACK);
+    tft.drawString("Vlhkost venku: " + String(data.outdoorHumidity) + "%", 160, 210, GFXFF); // Print the string name of the font
 }

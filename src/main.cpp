@@ -11,15 +11,15 @@ Display display;
 Thermostat thermostat;
 
 const int readMeteoDataInterval = 10000;
-const int readOutdoorMeteoDataInterval = 30000;
+const int readOtherSensorsMeteoDataInterval = 30000;
 const int sendDataToBlynkInterval = 60000;
 
 void readMeteoData();
-void readOutdoorMeteoData();
+void readOtherSensorsMeteoData();
 void sendDataToBlynk();
 Ticker timerReadMeteoData(readMeteoData, readMeteoDataInterval);
 Ticker timerSendDataToBlynk(sendDataToBlynk, sendDataToBlynkInterval);
-Ticker timerReadOutdoorMeteoData(readOutdoorMeteoData, readOutdoorMeteoDataInterval);
+Ticker timerReadOtherSensorsMeteoData(readOtherSensorsMeteoData, readOtherSensorsMeteoDataInterval);
 
 // Connections to APIs are OK
 bool apisAreConnected = false;
@@ -38,9 +38,10 @@ void readMeteoData()
     display.printMeteoData(meteoData);
 }
 
-void readOutdoorMeteoData()
+void readOtherSensorsMeteoData()
 {
     connection.setOutdoorMeteoData(meteoData);
+    connection.setBedroomMeteoData(meteoData);
     display.printMeteoData(meteoData);
 }
 
@@ -70,14 +71,14 @@ void sendDataToBlynk()
 void startTimers()
 {
     timerReadMeteoData.start();
-    timerReadOutdoorMeteoData.start();
+    timerReadOtherSensorsMeteoData.start();
     timerSendDataToBlynk.start();
 }
 
 void updateTimers()
 {
     timerReadMeteoData.update();
-    timerReadOutdoorMeteoData.update();
+    timerReadOtherSensorsMeteoData.update();
     timerSendDataToBlynk.update();
 }
 

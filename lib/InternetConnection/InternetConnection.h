@@ -12,7 +12,7 @@ public:
   bool initializeBlynk(void);
   bool sendDataToBlynk(MeteoData);
   void setOutdoorMeteoData(MeteoData &);
-  void setBedroomMeteoData(MeteoData);
+  void setBedroomMeteoData(MeteoData &);
   //void setStatusToBlynk(bool, String, int);
   void runBlynk();
 
