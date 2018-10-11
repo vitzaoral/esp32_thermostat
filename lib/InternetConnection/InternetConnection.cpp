@@ -1,12 +1,49 @@
 #include "../../src/settings.cpp"
 #include <BlynkSimpleEsp32.h>
-#include "InternetConnection.h"
+#include <InternetConnection.h>
+#include <Thermostat.h>
 
 // Blynk Pins:
 // V1 - shtTemperature
 // V2 - shtHumidity
 // V3 - WiFi IP address
 // V4 - WiFi rssi
+// V5 - target temperature setted from Blynk app
+// V6 - heating status
+// V7 - is heating graph value (true / false)
+
+void setToEEPROM(int address, int value)
+{
+    EEPROM.write(address, value);
+    EEPROM.commit();
+}
+
+void callThermostatControllAndSetStatusToBlynk()
+{
+    ThermostatStatus status = Thermostat::controllThermostat();
+
+    InternetConnection::setStatusToBlynk(status.message, status.color);
+    InternetConnection::setIsHeatingToBlynk(status.isHeating);
+}
+
+// Enable/disable thermostat, set value to EEPROM to address 1
+BLYNK_WRITE(V0)
+{
+    param.asInt() ? setToEEPROM(1, true) : setToEEPROM(1, false);
+    callThermostatControllAndSetStatusToBlynk();
+}
+
+// Set temperature slider, write back to blynk to confirm show
+BLYNK_WRITE(V10)
+{
+    int requiredTemp = param.asInt();
+    Blynk.virtualWrite(V5, requiredTemp);
+    Serial.println("Target Temperature is " + String(requiredTemp) + "°C");
+    setToEEPROM(2, requiredTemp);
+    callThermostatControllAndSetStatusToBlynk();
+}
+
+////////////////////////// INTERNET CONNECTION PART //////////////////////////
 
 Settings settings;
 
@@ -16,15 +53,6 @@ const char *blynkAuth = settings.blynkAuth;
 
 // number of attempts to connecting WIFI,API etc.
 const int timeout = 10;
-
-// Enable/disable thermostat, set value to EEPROM to address 1
-BLYNK_WRITE(V0)
-{
-    // param.asInt() ? setToEEPROM(1, true) : setToEEPROM(1, false);
-    // InternetConnection::callThermostatControll();
-    param.asInt() ? digitalWrite(16, HIGH) : digitalWrite(16, LOW);
-    Serial.println("BLYNK_WRITE");
-}
 
 // Initialize WiFi connection. Return true if connection is successful.
 bool InternetConnection::initialize(void)
@@ -134,4 +162,17 @@ bool InternetConnection::initializeBlynk(void)
 void InternetConnection::runBlynk(void)
 {
     Blynk.run();
+}
+
+// Static method - send message status to Blynk
+void InternetConnection::setStatusToBlynk(String status, String color)
+{
+    Blynk.virtualWrite(V6, status);
+    Blynk.setProperty(V6, "color", color);
+}
+
+// Send isHeating status to Blynk
+void InternetConnection::setIsHeatingToBlynk(bool isHeating)
+{
+    Blynk.virtualWrite(V7, isHeating ? 1 : 0);
 }

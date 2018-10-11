@@ -4,17 +4,19 @@
 #include <WiFi.h>
 #include <HTTPClient.h>
 #include <MeteoData.h>
+#include <EEPROM.h>
 
 class InternetConnection
 {
 public:
-  bool initialize(void);
+  bool initialize();
   bool initializeBlynk(void);
   bool sendDataToBlynk(MeteoData);
   void setOutdoorMeteoData(MeteoData &);
   void setBedroomMeteoData(MeteoData &);
-  //void setStatusToBlynk(bool, String, int);
   void runBlynk();
+  static void setStatusToBlynk(String, String);
+  static void setIsHeatingToBlynk(bool);
 
 private:
   float getFloatFromBlynkUrl(String, int);

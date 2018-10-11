@@ -1,16 +1,20 @@
-#include "MeteoData.h"
-
-Adafruit_SHT31 sht31 = Adafruit_SHT31();
+#include <MeteoData.h>
 
 // Initialize and get meteorological data
 MeteoData::MeteoData()
 {
+    Adafruit_SHT31 sht31 = Adafruit_SHT31();
     if (!sht31.begin(0x44))
     {
         Serial.println("Could not find a valid SHT31X sensor on address 0x44!");
     }
+    else
+    {
+        Serial.println("Sht31 OK");
+    }
 }
 
+// Set temperature/humidity data from thermostat senzor
 void MeteoData::setData(void)
 {
     shtTemperature = sht31.readTemperature();

@@ -4,11 +4,11 @@
 #include <Thermostat.h>
 #include <Display.h>
 #include <Ticker.h>
+#include <EEPROM.h>
 
-InternetConnection connection;
 MeteoData meteoData;
+InternetConnection connection;
 Display display;
-Thermostat thermostat;
 
 const int readMeteoDataInterval = 10000;
 const int readOtherSensorsMeteoDataInterval = 30000;
@@ -84,7 +84,10 @@ void updateTimers()
 
 void setup()
 {
+    // Initialize two bytes: 1. device status (enabled/disabled) and 2. required temperature
+    EEPROM.begin(2);
     Serial.begin(9600);
+    Thermostat::initialize();
     initializeInternetConnection();
     startTimers();
 }

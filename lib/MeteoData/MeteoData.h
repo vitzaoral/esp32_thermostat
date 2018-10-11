@@ -7,6 +7,7 @@ class MeteoData
 {
   public:
     MeteoData();
+    Adafruit_SHT31 sht31;
     float shtTemperature;
     float shtHumidity;
     float outdoorTemperature;
