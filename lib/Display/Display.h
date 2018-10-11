@@ -10,7 +10,7 @@ class Display
 {
   public:
     Display();
-    void printMeteoData(MeteoData data);
+    void printMeteoData();
 
   private:
     void setup(void);

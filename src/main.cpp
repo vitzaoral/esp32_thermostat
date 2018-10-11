@@ -6,7 +6,6 @@
 #include <Ticker.h>
 #include <EEPROM.h>
 
-MeteoData meteoData;
 InternetConnection connection;
 Display display;
 
@@ -34,22 +33,22 @@ void initializeInternetConnection()
 
 void readMeteoData()
 {
-    meteoData.setData();
-    display.printMeteoData(meteoData);
+    MeteoData::setData();
+    display.printMeteoData();
 }
 
 void readOtherSensorsMeteoData()
 {
-    connection.setOutdoorMeteoData(meteoData);
-    connection.setBedroomMeteoData(meteoData);
-    display.printMeteoData(meteoData);
+    connection.setOutdoorMeteoData();
+    connection.setBedroomMeteoData();
+    display.printMeteoData();
 }
 
 void sendDataToBlynk()
 {
     if (apisAreConnected)
     {
-        bool successBlynk = connection.sendDataToBlynk(meteoData);
+        bool successBlynk = connection.sendDataToBlynk();
 
         if (successBlynk)
         {
@@ -87,6 +86,7 @@ void setup()
     // Initialize two bytes: 1. device status (enabled/disabled) and 2. required temperature
     EEPROM.begin(2);
     Serial.begin(9600);
+    MeteoData::initialize();
     Thermostat::initialize();
     initializeInternetConnection();
     startTimers();

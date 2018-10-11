@@ -6,19 +6,19 @@
 class MeteoData
 {
   public:
-    MeteoData();
-    Adafruit_SHT31 sht31;
-    float shtTemperature;
-    float shtHumidity;
-    float outdoorTemperature;
-    float outdoorHumidity;
-    float bedroomTemperature;
-    float bedroomHumidity;
 
-    void setData(void);
-    void setOutdoorData(float, float);
-    void setBedroomData(float, float);
-    bool dataAreValid(void);
+    static void initialize(void);
+    static float shtTemperature;
+    static float shtHumidity;
+    static float outdoorTemperature;
+    static float outdoorHumidity;
+    static float bedroomTemperature;
+    static float bedroomHumidity;
+
+    static void setData(void);
+    static void setOutdoorData(float, float);
+    static void setBedroomData(float, float);
+    static bool dataAreValid(void);
 };
 
 #endif

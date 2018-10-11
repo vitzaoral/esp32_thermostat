@@ -12,16 +12,15 @@ ThermostatStatus Thermostat::controllThermostat()
 {
     ThermostatStatus status;
 
-    MeteoData meteoData = MeteoData();
-    meteoData.setData();
+    MeteoData::setData();
 
-    if (meteoData.dataAreValid())
+    if (MeteoData::dataAreValid())
     {
         // heating is enabled
         if (EEPROM.read(1) == true)
         {
             int requiredTemperature = EEPROM.read(2);
-            if (requiredTemperature >= 10 && requiredTemperature <= 25 && meteoData.shtTemperature <= requiredTemperature)
+            if (requiredTemperature >= 10 && requiredTemperature <= 25 && MeteoData::shtTemperature <= requiredTemperature)
             {
                 // if heating is OFF
                 if (digitalRead(relayPinAddress) == LOW)

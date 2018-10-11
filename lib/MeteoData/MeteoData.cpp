@@ -1,9 +1,18 @@
 #include <MeteoData.h>
 
+Adafruit_SHT31 sht31 = Adafruit_SHT31();
+
+// static variables declaration
+float MeteoData::shtTemperature;
+float MeteoData::shtHumidity;
+float MeteoData::outdoorTemperature;
+float MeteoData::outdoorHumidity;
+float MeteoData::bedroomTemperature;
+float MeteoData::bedroomHumidity;
+
 // Initialize and get meteorological data
-MeteoData::MeteoData()
+void MeteoData::initialize(void)
 {
-    Adafruit_SHT31 sht31 = Adafruit_SHT31();
     if (!sht31.begin(0x44))
     {
         Serial.println("Could not find a valid SHT31X sensor on address 0x44!");

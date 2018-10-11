@@ -11,9 +11,9 @@ class InternetConnection
 public:
   bool initialize();
   bool initializeBlynk(void);
-  bool sendDataToBlynk(MeteoData);
-  void setOutdoorMeteoData(MeteoData &);
-  void setBedroomMeteoData(MeteoData &);
+  bool sendDataToBlynk();
+  void setOutdoorMeteoData();
+  void setBedroomMeteoData();
   void runBlynk();
   static void setStatusToBlynk(String, String);
   static void setIsHeatingToBlynk(bool);
