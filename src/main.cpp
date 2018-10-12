@@ -9,6 +9,7 @@
 InternetConnection connection;
 Display display;
 
+// intervals in miliseconds
 const int readMeteoDataInterval = 10000;
 const int readOtherSensorsMeteoDataInterval = 30000;
 const int sendDataToBlynkInterval = 60000;
@@ -16,9 +17,12 @@ const int sendDataToBlynkInterval = 60000;
 void readMeteoData();
 void readOtherSensorsMeteoData();
 void sendDataToBlynk();
+void controllThermostat();
+
 Ticker timerReadMeteoData(readMeteoData, readMeteoDataInterval);
 Ticker timerSendDataToBlynk(sendDataToBlynk, sendDataToBlynkInterval);
 Ticker timerReadOtherSensorsMeteoData(readOtherSensorsMeteoData, readOtherSensorsMeteoDataInterval);
+Ticker timerControllThermostat(controllThermostat, controllThermostatInterval * 1000);
 
 // Connections to APIs are OK
 bool apisAreConnected = false;
@@ -42,6 +46,13 @@ void readOtherSensorsMeteoData()
     connection.setOutdoorMeteoData();
     connection.setBedroomMeteoData();
     display.printMeteoData();
+}
+
+void controllThermostat() {
+    ThermostatStatus status = Thermostat::controllThermostat();
+
+    InternetConnection::setStatusToBlynk(status.message, status.color);
+    InternetConnection::setIsHeatingToBlynk(status.isHeating);
 }
 
 void sendDataToBlynk()
@@ -72,6 +83,7 @@ void startTimers()
     timerReadMeteoData.start();
     timerReadOtherSensorsMeteoData.start();
     timerSendDataToBlynk.start();
+    timerControllThermostat.start();
 }
 
 void updateTimers()
@@ -79,6 +91,7 @@ void updateTimers()
     timerReadMeteoData.update();
     timerReadOtherSensorsMeteoData.update();
     timerSendDataToBlynk.update();
+    timerControllThermostat.update();
 }
 
 void setup()

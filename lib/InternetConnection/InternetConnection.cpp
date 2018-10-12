@@ -110,6 +110,7 @@ float InternetConnection::getFloatFromBlynkUrl(String blynkAuth, int virtualBlyn
     if ((WiFi.status() == WL_CONNECTED))
     {
         HTTPClient http;
+        http.setReuse(true);
         http.begin("http://blynk-cloud.com:8080/" + blynkAuth + "/get/V" + virtualBlynkPin);
         int httpCode = http.GET();
 

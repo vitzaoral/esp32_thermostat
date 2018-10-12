@@ -33,10 +33,9 @@ ThermostatStatus Thermostat::controllThermostat()
                 }
                 else
                 {
-                    // TODO do nejake constanty tech 10 sekund
                     // TODO dodat nejaky max count po ktery muze topit, treba 30min apod.
-                    // heating is ON, add 10 seconds according to readMetheoDataDisplayDataControllThermostatInterval in main.cpp
-                    timer += 10;
+                    // heating is ON, add seconds heating timer
+                    timer += controllThermostatInterval;
                     status = {(char *)"Heating ON", (char *)"#00FF00", true};
                 }
             }
@@ -55,7 +54,7 @@ ThermostatStatus Thermostat::controllThermostat()
                     else
                     {
                         // count to 1 minute
-                        timer += 10;
+                        timer += controllThermostatInterval;
                         status = {(char *)"Heating (waiting to OFF)", (char *)"#00FF00", true};
                     }
                 }

@@ -9,6 +9,8 @@
 #define relayPinAddress 16
 // minimal delay between two relay starts in seconds
 #define heatingBreakTimeInSeconds 60
+// interval when controll thermostat in seconds
+#define controllThermostatInterval 5
 
 struct ThermostatStatus
 {
