@@ -7,7 +7,6 @@
 #include <EEPROM.h>
 
 InternetConnection connection;
-Display display;
 
 // intervals in miliseconds
 const int readMeteoDataInterval = 10000;
@@ -32,20 +31,22 @@ void initializeInternetConnection()
     if (connection.initialize())
     {
         apisAreConnected = connection.initializeBlynk();
+        connection.initializeOTA();
     }
+    Display::printWifiStatus();
 }
 
 void readMeteoData()
 {
     MeteoData::setData();
-    display.printMeteoData();
+    Display::printMeteoData();
 }
 
 void readOtherSensorsMeteoData()
 {
     connection.setOutdoorMeteoData();
     connection.setBedroomMeteoData();
-    display.printMeteoData();
+    Display::printMeteoData();
 }
 
 void controllThermostat() {
@@ -99,9 +100,16 @@ void setup()
     // Initialize two bytes: 1. device status (enabled/disabled) and 2. required temperature
     EEPROM.begin(2);
     Serial.begin(9600);
+
+    // initialize components
+    Display::initialize();
     MeteoData::initialize();
     Thermostat::initialize();
+
+    // try connect to internet
     initializeInternetConnection();
+
+    // start process in timers
     startTimers();
 }
 
@@ -109,4 +117,5 @@ void loop()
 {
     updateTimers();
     connection.runBlynk();
+    connection.handleOTA();
 }

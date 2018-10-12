@@ -51,8 +51,8 @@ const char *ssid = settings.ssid;
 const char *password = settings.password;
 const char *blynkAuth = settings.blynkAuth;
 
-// number of attempts to connecting WIFI,API etc.
-const int timeout = 10;
+// in attemps
+const int timeout = 20;
 
 // Initialize WiFi connection. Return true if connection is successful.
 bool InternetConnection::initialize(void)
@@ -70,7 +70,7 @@ bool InternetConnection::initialize(void)
     int i = 0;
     while (WiFi.status() != WL_CONNECTED)
     {
-        delay(1000);
+        delay(500);
         Serial.print(".");
         if (i == timeout)
         {
@@ -78,6 +78,7 @@ bool InternetConnection::initialize(void)
             return false;
         }
         i++;
+        Display::printProgressBar(i * 5);
     }
     Serial.println("");
     Serial.println("WiFi connected");
@@ -176,4 +177,17 @@ void InternetConnection::setStatusToBlynk(String status, String color)
 void InternetConnection::setIsHeatingToBlynk(bool isHeating)
 {
     Blynk.virtualWrite(V7, isHeating ? 1 : 0);
+}
+
+void InternetConnection::initializeOTA(void)
+{
+    ArduinoOTA.setHostname(settings.hostNameOTA);
+    ArduinoOTA.setPassword(settings.passwordOTA);
+    ArduinoOTA.begin();
+}
+
+// Run OTA in loop
+void InternetConnection::handleOTA(void)
+{
+    ArduinoOTA.handle();
 }

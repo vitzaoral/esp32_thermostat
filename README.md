@@ -4,14 +4,18 @@ WiFi thermostat based on the ESP32 (Espressif WROOM-32 Developer Kit), using SHT
 
 **The project is not yet complete and is still being developed!**
 
-> To build a project, you need to download all the necessary libraries and create the *settings.cpp* file in the src folder:
+> To build a project, you need to download all the necessary libraries and create the *settings.cpp* file in the src folder with specific settings:
 ```c++
 // Thermostat project settings
 struct Settings
 {
     const char *ssid = "WIFI ssid";
     const char *password = "WIFI password";
-    const char *blynkAuth = "blynkAuth";
+    const char *blynkAuth = "blynkAuthDevice1";
+    const char *blynkAuthOutdoor = "blynkAuthDevice2";
+    const char *blynkAuthBedroom = "blynkAuthDevice3";
+    const char *hostNameOTA = "OTA host name";
+    const char *passwordOTA = "OTA password";
     const char *version = "0.1.0";
 };
 ```
