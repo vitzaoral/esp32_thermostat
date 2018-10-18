@@ -4,7 +4,7 @@ int timer = 0;
 
 void Thermostat::initialize()
 {
-    pinMode(relayPinAddress, OUTPUT);
+    pinMode(RELAY_PIN, OUTPUT);
 }
 
 // Set thermostat ON/OFF and temperature
@@ -23,10 +23,10 @@ ThermostatStatus Thermostat::controllThermostat()
             if (requiredTemperature >= 10 && requiredTemperature <= 25 && MeteoData::shtTemperature <= requiredTemperature)
             {
                 // if heating is OFF
-                if (digitalRead(relayPinAddress) == LOW)
+                if (digitalRead(RELAY_PIN) == LOW)
                 {
-                    digitalWrite(relayPinAddress, HIGH);
-                    status = {(char *)"Heating ON", (char *)"#00FF00", true};
+                    digitalWrite(RELAY_PIN, HIGH);
+                    status = {String("Heating ON"), TFT_GREEN, true};
 
                     // start heating, set timer to 0 seconds
                     timer = 0;
@@ -35,51 +35,52 @@ ThermostatStatus Thermostat::controllThermostat()
                 {
                     // TODO dodat nejaky max count po ktery muze topit, treba 30min apod.
                     // heating is ON, add seconds heating timer
-                    timer += controllThermostatInterval;
-                    status = {(char *)"Heating ON", (char *)"#00FF00", true};
+                    timer += CONTROLL_THERMOSTAT_INTERVAL;
+                    status = {String("Heating ON"), TFT_GREEN, true};
                 }
             }
             else
             {
                 // if heating is ON, should turn OFF
-                if (digitalRead(relayPinAddress) == HIGH)
+                if (digitalRead(RELAY_PIN) == HIGH)
                 {
                     // look to timer, turn off after minute
-                    if (timer >= heatingBreakTimeInSeconds)
+                    if (timer >= HEATING_BREAK_TIME_SECONDS)
                     {
-                        digitalWrite(relayPinAddress, LOW);
-                        status = {(char *)"Heating OFF", (char *)"#FF0000", false};
+                        digitalWrite(RELAY_PIN, LOW);
+                        status = {String("Heating OFF"), TFT_BLUE, false};
                         timer = 0;
                     }
                     else
                     {
                         // count to 1 minute
-                        timer += controllThermostatInterval;
-                        status = {(char *)"Heating (waiting to OFF)", (char *)"#00FF00", true};
+                        timer += CONTROLL_THERMOSTAT_INTERVAL;
+                        status = {String("Heating (waiting to OFF)"), TFT_GREENYELLOW, true};
                     }
                 }
                 else
                 {
                     // heating was OFF
-                    digitalWrite(relayPinAddress, LOW);
-                    status = {(char *)"Heating OFF", (char *)"#FF0000", false};
+                    digitalWrite(RELAY_PIN, LOW);
+                    status = {String("Heating OFF"), TFT_BLUE, false};
                     timer = 0;
                 }
             }
         }
         else
         {
-            digitalWrite(relayPinAddress, LOW);
-            status = {(char *)"Heating not enabled", (char *)"#FF0000", false};
+            digitalWrite(RELAY_PIN, LOW);
+            status = {String("Heating not enabled"), TFT_RED, false};
             timer = 0;
         }
     }
     else
     {
-        digitalWrite(relayPinAddress, LOW);
-        status = {(char *)"Temperature data are invalid, heating OFF", (char *)"#FF0000", false};
+        digitalWrite(RELAY_PIN, LOW);
+        status = {String("Temperature data are invalid, heating OFF"), TFT_RED, false};
         timer = 0;
     }
 
+    Display::printHeatingStatus(status.color, status.message);
     return status;
 }

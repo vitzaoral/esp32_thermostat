@@ -6,6 +6,8 @@ TFT_eSPI tft = TFT_eSPI();
 // Other components (progress bar)
 GfxUi ui = GfxUi(&tft);
 
+static bool firstClear = true;
+
 // Initialize ILI9341 display
 // Setup in User_Setup.h -> TFT_eSPI library
 void Display::initialize()
@@ -64,7 +66,11 @@ void Display::printMeteoData()
 
     // Set text datum to middle centre
     tft.setTextDatum(MC_DATUM);
-    tft.fillScreen(backgroundColor); // Clear screen
+    if (firstClear)
+    {
+        tft.fillScreen(backgroundColor); // Clear screen
+        firstClear = false;
+    }
 
     tft.setFreeFont(FF1); // Select the font
 
@@ -74,12 +80,39 @@ void Display::printMeteoData()
     tft.drawString("Vlhkost: " + String(MeteoData::shtHumidity) + "%", 160, 50, GFXFF); // Print the string name of the font
 
     tft.setTextColor(TFT_RED, backgroundColor);
-    tft.drawString("Teplota loznice: " + String(MeteoData::bedroomTemperature) + "°C", 160, 100, GFXFF); // Print the string name of the font
+    tft.drawString("Teplota loznice: " + String(MeteoData::bedroomTemperature) + "°C", 160, 80, GFXFF); // Print the string name of the font
     tft.setTextColor(TFT_BLUE, backgroundColor);
-    tft.drawString("Vlhkost loznice: " + String(MeteoData::bedroomHumidity) + "%", 160, 130, GFXFF); // Print the string name of the font
+    tft.drawString("Vlhkost loznice: " + String(MeteoData::bedroomHumidity) + "%", 160, 110, GFXFF); // Print the string name of the font
 
     tft.setTextColor(TFT_RED, backgroundColor);
-    tft.drawString("Teplota venku: " + String(MeteoData::outdoorTemperature) + "°C", 160, 180, GFXFF); // Print the string name of the font
+    tft.drawString("Teplota venku: " + String(MeteoData::outdoorTemperature) + "°C", 160, 140, GFXFF); // Print the string name of the font
     tft.setTextColor(TFT_BLUE, backgroundColor);
-    tft.drawString("Vlhkost venku: " + String(MeteoData::outdoorHumidity) + "%", 160, 210, GFXFF); // Print the string name of the font
+    tft.drawString("Vlhkost venku: " + String(MeteoData::outdoorHumidity) + "%", 160, 170, GFXFF); // Print the string name of the font
+
+    // TODO: nejak poresit define konstanty - do nejakeho souboru a linkovat vsude?
+    int requiredTemp = EEPROM.read(2);
+    Display::prinTargetTemperature(requiredTemp);
+}
+
+void Display::prinTargetTemperature(int targetTemperature)
+{
+    int backgroundColor = TFT_WHITE;
+
+    // Set text datum to middle centre
+    tft.setTextDatum(MC_DATUM);
+    tft.setFreeFont(FF1); // Select the font
+
+    tft.setTextColor(TFT_RED, backgroundColor);
+    tft.drawString("Nastavena teplota: " + String(targetTemperature) + "°C", 160, 200, GFXFF);
+}
+
+void Display::printHeatingStatus(int color, String message)
+{
+    int backgroundColor = TFT_WHITE;
+    // Set text datum to middle centre
+    tft.setTextDatum(MC_DATUM);
+    tft.setFreeFont(FF1); // Select the font
+
+    tft.setTextColor(color, backgroundColor);
+    tft.drawString("Stav: " + message, 160, 230, GFXFF);
 }

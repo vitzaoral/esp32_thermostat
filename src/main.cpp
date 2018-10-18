@@ -21,7 +21,7 @@ void controllThermostat();
 Ticker timerReadMeteoData(readMeteoData, readMeteoDataInterval);
 Ticker timerSendDataToBlynk(sendDataToBlynk, sendDataToBlynkInterval);
 Ticker timerReadOtherSensorsMeteoData(readOtherSensorsMeteoData, readOtherSensorsMeteoDataInterval);
-Ticker timerControllThermostat(controllThermostat, controllThermostatInterval * 1000);
+Ticker timerControllThermostat(controllThermostat, CONTROLL_THERMOSTAT_INTERVAL * 1000);
 
 // Connections to APIs are OK
 bool apisAreConnected = false;

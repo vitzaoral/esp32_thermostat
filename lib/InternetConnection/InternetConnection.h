@@ -8,6 +8,11 @@
 #include <EEPROM.h>
 #include <Display.h>
 
+// address 1 - enable/disable heating
+#define EEPROM_ENABLED_DISABLED_HEATING_ADDRESS 1
+// address 2 - target temperature
+#define EEPROM_TARGET_HEATING_TEMPERATURE_ADDRESS 2
+
 class InternetConnection
 {
 public:
@@ -19,7 +24,7 @@ public:
   void setOutdoorMeteoData();
   void setBedroomMeteoData();
   void runBlynk();
-  static void setStatusToBlynk(String, String);
+  static void setStatusToBlynk(String, int);
   static void setIsHeatingToBlynk(bool);
 
 private:

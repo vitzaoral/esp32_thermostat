@@ -14,6 +14,8 @@
 
 void setToEEPROM(int address, int value)
 {
+    // address 1 - enable/disable heating
+    // address 2 - target temperature
     EEPROM.write(address, value);
     EEPROM.commit();
 }
@@ -29,7 +31,7 @@ void callThermostatControllAndSetStatusToBlynk()
 // Enable/disable thermostat, set value to EEPROM to address 1
 BLYNK_WRITE(V0)
 {
-    param.asInt() ? setToEEPROM(1, true) : setToEEPROM(1, false);
+    setToEEPROM(EEPROM_ENABLED_DISABLED_HEATING_ADDRESS, param.asInt());
     callThermostatControllAndSetStatusToBlynk();
 }
 
@@ -39,8 +41,9 @@ BLYNK_WRITE(V10)
     int requiredTemp = param.asInt();
     Blynk.virtualWrite(V5, requiredTemp);
     Serial.println("Target Temperature is " + String(requiredTemp) + "°C");
-    setToEEPROM(2, requiredTemp);
+    setToEEPROM(EEPROM_TARGET_HEATING_TEMPERATURE_ADDRESS, requiredTemp);
     callThermostatControllAndSetStatusToBlynk();
+    Display::prinTargetTemperature(requiredTemp);
 }
 
 ////////////////////////// INTERNET CONNECTION PART //////////////////////////
@@ -167,10 +170,29 @@ void InternetConnection::runBlynk(void)
 }
 
 // Static method - send message status to Blynk
-void InternetConnection::setStatusToBlynk(String status, String color)
+void InternetConnection::setStatusToBlynk(String status, int color)
 {
+    String colorValue = "";
+    switch (color)
+    {
+    case TFT_GREEN:
+        colorValue = String("#00FF00");
+        break;
+    case TFT_BLUE:
+        colorValue = String("#0080FF");
+        break;
+    case TFT_GREENYELLOW:
+        colorValue = String("#D9E650");
+        break;
+    case TFT_RED:
+        colorValue = String("#FF0000");
+        break;
+    default:
+        break;
+    }
+
     Blynk.virtualWrite(V6, status);
-    Blynk.setProperty(V6, "color", color);
+    Blynk.setProperty(V6, "color", colorValue);
 }
 
 // Send isHeating status to Blynk

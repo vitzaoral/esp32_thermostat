@@ -4,18 +4,19 @@
 #include <Arduino.h>
 #include <MeteoData.h>
 #include <EEPROM.h>
+#include <Display.h>
 
 // relay pin
-#define relayPinAddress 16
+#define RELAY_PIN 16
 // minimal delay between two relay starts in seconds
-#define heatingBreakTimeInSeconds 60
+#define HEATING_BREAK_TIME_SECONDS 60
 // interval when controll thermostat in seconds
-#define controllThermostatInterval 5
+#define CONTROLL_THERMOSTAT_INTERVAL 5
 
 struct ThermostatStatus
 {
-  char *message;
-  char *color;
+  String message;
+  int color;
   bool isHeating;
 };
 

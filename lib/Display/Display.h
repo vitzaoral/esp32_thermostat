@@ -7,6 +7,7 @@
 #include <Free_Fonts.h>
 #include <MeteoData.h>
 #include <WiFi.h>
+#include <EEPROM.h>
 
 class Display
 {
@@ -16,6 +17,8 @@ class Display
     static void printWifiStatus();
     static void printMeteoData();
     static void printProgressBar(int);
+    static void prinTargetTemperature(int);
+    static void printHeatingStatus(int, String);
 };
 
 #endif
