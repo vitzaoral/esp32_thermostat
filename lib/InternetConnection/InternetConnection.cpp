@@ -155,7 +155,6 @@ void InternetConnection::setBedroomMeteoData()
 bool InternetConnection::initializeBlynk(void)
 {
     Serial.println("WiFi connecting to Blynk");
-    // TODO: tohle vola wifi.begin, neda se to nejak obejit?
     Blynk.config(blynkAuth);
 
     // timeout 3sec
