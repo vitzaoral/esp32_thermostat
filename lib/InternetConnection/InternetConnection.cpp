@@ -180,7 +180,7 @@ void InternetConnection::setStatusToBlynk(String status, int color)
     case TFT_BLUE:
         colorValue = String("#0080FF");
         break;
-    case TFT_GREENYELLOW:
+    case TFT_YELLOW:
         colorValue = String("#D9E650");
         break;
     case TFT_RED:

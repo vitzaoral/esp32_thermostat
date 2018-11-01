@@ -26,7 +26,7 @@ ThermostatStatus Thermostat::controllThermostat()
                 if (digitalRead(RELAY_PIN) == LOW)
                 {
                     digitalWrite(RELAY_PIN, HIGH);
-                    status = {String("Heating ON"), TFT_GREEN, true};
+                    status = {String("TOPÍ SE"), TFT_GREEN, true};
 
                     // start heating, set timer to 0 seconds
                     timer = 0;
@@ -36,7 +36,7 @@ ThermostatStatus Thermostat::controllThermostat()
                     // TODO dodat nejaky max count po ktery muze topit, treba 30min apod.
                     // heating is ON, add seconds heating timer
                     timer += CONTROLL_THERMOSTAT_INTERVAL;
-                    status = {String("Heating ON"), TFT_GREEN, true};
+                    status = {String("TOPÍ SE"), TFT_GREEN, true};
                 }
             }
             else
@@ -48,36 +48,38 @@ ThermostatStatus Thermostat::controllThermostat()
                     if (timer >= HEATING_BREAK_TIME_SECONDS)
                     {
                         digitalWrite(RELAY_PIN, LOW);
-                        status = {String("Heating OFF"), TFT_BLUE, false};
+                        status = {String("NETOPÍ SE"), TFT_BLUE, false};
                         timer = 0;
                     }
                     else
                     {
                         // count to 1 minute
                         timer += CONTROLL_THERMOSTAT_INTERVAL;
-                        status = {String("Heating (waiting to OFF)"), TFT_GREENYELLOW, true};
+                        status = {String("VYPNUTÍ ZA ") + String(HEATING_BREAK_TIME_SECONDS - timer) + "s", TFT_YELLOW, true};
                     }
                 }
                 else
                 {
                     // heating was OFF
                     digitalWrite(RELAY_PIN, LOW);
-                    status = {String("Heating OFF"), TFT_BLUE, false};
+                    status = {String("NETOPÍ SE"), TFT_BLUE, false};
                     timer = 0;
                 }
             }
         }
         else
         {
+            // heating NOT ENABLED
             digitalWrite(RELAY_PIN, LOW);
-            status = {String("Heating not enabled"), TFT_RED, false};
+            status = {String("VYPNUTO"), TFT_RED, false};
             timer = 0;
         }
     }
     else
     {
+        // Temperature data are invalid, heating OFF
         digitalWrite(RELAY_PIN, LOW);
-        status = {String("Temperature data are invalid, heating OFF"), TFT_RED, false};
+        status = {String("! ŠPATNÁ DATA !"), TFT_RED, false};
         timer = 0;
     }
 

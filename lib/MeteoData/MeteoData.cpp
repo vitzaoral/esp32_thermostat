@@ -64,9 +64,9 @@ void MeteoData::setBedroomData(float temperature, float humidity)
         bedroomTemperature = temperature;
         bedroomHumidity = humidity;
         Serial.print(temperature);
-        Serial.println("°C - outdoor data temperature");
+        Serial.println("°C - bedroom data temperature");
         Serial.print(humidity);
-        Serial.println("% - outdoor data humidity");
+        Serial.println("% - bedroom data humidity");
     }
 }
 

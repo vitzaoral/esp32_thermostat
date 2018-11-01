@@ -93,7 +93,7 @@ void Display::initialize()
             yield(); // Stay here twiddling thumbs waiting
     }
 
-    Serial.println("\r\nSPIFFS available!");
+    Serial.println("SPIFFS available!");
 
     Display::testMissingFiles();
     Display::welcomeScreen(true);
@@ -114,6 +114,8 @@ void Display::welcomeScreen(bool showLoading)
         tft.loadFont(REGULAR_25);
         tft.drawString("... načítám ...", 160, 150, GFXFF);
     }
+
+    tft.unloadFont();
 }
 
 void Display::printTempleate(int offsetY, String description)
@@ -127,8 +129,8 @@ void Display::printTempleate(int offsetY, String description)
 void Display::prepareTemplate()
 {
     // clear display
-    tft.fillScreen(TFT_BLACK);
-    tft.setTextColor(TFT_WHITE, TFT_BLACK);
+    tft.fillScreen(BACKGROUND_COLOR);
+    tft.setTextColor(TFT_WHITE, BACKGROUND_COLOR);
     tft.loadFont(REGULAR_25);
 
     printTempleate(DATA_1_OFFSET_Y, "Obývák");
@@ -141,15 +143,6 @@ void Display::prepareTemplate()
     tft.print("Topit na:");
     jpegUtils.drawJpeg(PIC_BUTTON_MINUS, 210, offsetY + 5);
     jpegUtils.drawJpeg(PIC_BUTTON_PLUS, 270, offsetY + 5);
-
-    // servis info
-    tft.loadFont(THIN_10);
-    tft.setTextColor(TFT_WHITE, TFT_BLACK);
-    tft.setCursor(0, 225);
-    tft.print(WiFi.localIP().toString());
-    tft.setTextDatum(TR_DATUM);
-    // TODO: cislo verze
-    tft.drawString("V1.0", 320, 225, 1);
 
     // Remove the font to recover memory used
     tft.unloadFont();
@@ -166,10 +159,13 @@ void Display::printWifiStatusAndPrepareTemplate()
 
     if (WiFi.status() == WL_CONNECTED)
     {
+        tft.drawString("Verze: 1.0", xPos, 100, GFXFF);
         tft.setTextColor(TFT_GREEN, BACKGROUND_COLOR);
         tft.drawString("WiFi OK", xPos, 140, GFXFF);
         tft.drawString("IP " + WiFi.localIP().toString(), xPos, 170, GFXFF);
         tft.drawString("Signál " + String(WiFi.RSSI()) + "dBi", xPos, 200, GFXFF);
+        tft.setTextColor(TFT_ORANGE, BACKGROUND_COLOR);
+        
 
         delay(3000);
         Display::prepareTemplate();
@@ -179,6 +175,8 @@ void Display::printWifiStatusAndPrepareTemplate()
         tft.setTextColor(TFT_RED, BACKGROUND_COLOR);
         tft.drawString("WiFi připojení se nezdařilo!", xPos, 140, GFXFF);
     }
+
+    tft.unloadFont();
 }
 
 void Display::printProgressBar(int percentage)
@@ -206,9 +204,9 @@ void Display::displayMeteoData(float temperature, int humidity, int offsetY)
 
     // temperature
     tft.loadFont(BOLD_30);
-    tft.fillRect(115, offsetY, 90, 40, TFT_BLACK);
+    tft.fillRect(115, offsetY, 90, 40, BACKGROUND_COLOR);
     tft.setCursor(120, offsetY);
-    tft.setTextColor(TFT_ORANGE, TFT_BLACK);
+    tft.setTextColor(TFT_ORANGE, BACKGROUND_COLOR);
     tft.print(parts.temperature);
 
     tft.loadFont(REGULAR_20);
@@ -218,9 +216,9 @@ void Display::displayMeteoData(float temperature, int humidity, int offsetY)
 
     // humidity
     tft.loadFont(BOLD_30);
-    tft.fillRect(244, offsetY, 70, 40, TFT_BLACK);
+    tft.fillRect(244, offsetY, 70, 40, BACKGROUND_COLOR);
     tft.setCursor(250, offsetY);
-    tft.setTextColor(TFT_CYAN, TFT_BLACK);
+    tft.setTextColor(TFT_CYAN, BACKGROUND_COLOR);
     tft.print(humidity);
     tft.loadFont(REGULAR_20);
     tft.print("%");
@@ -241,31 +239,32 @@ void Display::printLocalMeteoData()
 {
     displayMeteoData(MeteoData::shtTemperature, MeteoData::shtHumidity, DATA_1_OFFSET_Y);
 
-    // TODO: kam s timhle ??
     // TODO: nejak poresit define konstanty - do nejakeho souboru a linkovat vsude?
-    //int requiredTemp = EEPROM.read(2);
-    // Display::prinTargetTemperature(requiredTemp);
+    int requiredTemp = EEPROM.read(2);
+    Display::prinTargetTemperature(requiredTemp);
 }
 
 void Display::prinTargetTemperature(int targetTemperature)
 {
-    int backgroundColor = TFT_WHITE;
+    int xPos = 120;
+    int yPos = 160;
+    tft.setCursor(xPos, yPos);
+    tft.loadFont(BOLD_30);
+    tft.fillRect(xPos, yPos, 70, 40, BACKGROUND_COLOR);
+    tft.setTextColor(TFT_GREENYELLOW, BACKGROUND_COLOR);
+    tft.print(targetTemperature);
+    tft.print("°C");
 
-    // Set text datum to middle centre
-    tft.setTextDatum(MC_DATUM);
-    //  tft.setFreeFont(FF1); // Select the font
-
-    tft.setTextColor(TFT_RED, backgroundColor);
-    //  tft.drawString("Nastavena teplota: " + String(targetTemperature) + "°C", 160, 200, GFXFF);
+    tft.unloadFont();
 }
 
 void Display::printHeatingStatus(int color, String message)
 {
-    int backgroundColor = TFT_WHITE;
-    // Set text datum to middle centre
+    tft.fillRect(0, 200, 320, 40, BACKGROUND_COLOR);
+    tft.loadFont(BOLD_30);
     tft.setTextDatum(MC_DATUM);
-    //  tft.setFreeFont(FF1); // Select the font
+    tft.setTextColor(color, BACKGROUND_COLOR);
+    tft.drawString(message, 160, 220, 1);
 
-    tft.setTextColor(color, backgroundColor);
-    //  tft.drawString("Stav: " + message, 160, 230, GFXFF);
+    tft.unloadFont();
 }
