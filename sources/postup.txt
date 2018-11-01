@@ -1,0 +1,29 @@
+CREATE_FONT
+1. TFT font ktery chci nahrát do složky data
+2. v Create_font.pde skriptu správnì font pojmenovat, nastavit velikost kterou chci
+3. pustit
+4. do složky FontFiles se vygeneruje .vlw soubor
+
+5. všechny soubory (fonty, obrázky) které chci nahrát do ESP32 pøetáhnout do složky data kde je sketch (sketch_oct30b.ino)
+6. Pustit Arduino IDE, Tools - ESP32 Sketch Data Upload
+7. Vše na zaøízení se nejdøíve smaže, vše co je ve složce se nahraje, zaøízení se restartuje. Max 4MB (asi i vèetnì binárek)!
+
+
+
+*/
+//  The fonts used are in the sketch data folder, press Ctrl+K to view.
+
+//  Upload the fonts and icons to SPIFFS (must set at least 1M for SPIFFS) using the
+//  "Tools"  "ESP8266 (or ESP32) Sketch Data Upload" menu option in the IDE.
+//  To add this option follow instructions here for the ESP8266:
+//  https://github.com/esp8266/arduino-esp8266fs-plugin
+//  or for the ESP32:
+//  https://github.com/me-no-dev/arduino-esp32fs-plugin
+
+//  Close the IDE and open again to see the new menu option.
+
+//  A processing sketch to create new fonts can be found in the Tools folder of TFT_eSPI
+//  https://github.com/Bodmer/TFT_eSPI/tree/master/Tools/Create_Smooth_Font/Create_font
+
+//  This sketch uses font files created from the Noto family of fonts:
+//  https://www.google.com/get/noto/
