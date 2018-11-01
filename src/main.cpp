@@ -33,20 +33,21 @@ void initializeInternetConnection()
         apisAreConnected = connection.initializeBlynk();
         connection.initializeOTA();
     }
-    Display::printWifiStatus();
+    Display::printWifiStatusAndPrepareTemplate();
 }
 
 void readMeteoData()
 {
     MeteoData::setData();
-    Display::printMeteoData();
+    Display::printLocalMeteoData();
 }
 
 void readOtherSensorsMeteoData()
 {
     connection.setOutdoorMeteoData();
     connection.setBedroomMeteoData();
-    Display::printMeteoData();
+    // TODO kumbal
+    Display::printSensorsMeteoData();
 }
 
 void controllThermostat() {
