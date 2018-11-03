@@ -14,6 +14,7 @@ struct Settings
     const char *blynkAuth = "blynkAuthDevice1";
     const char *blynkAuthOutdoor = "blynkAuthDevice2";
     const char *blynkAuthBedroom = "blynkAuthDevice3";
+    const char *blynkAuthPantry = "blynkAuthDevice4";
     const char *hostNameOTA = "OTA host name";
     const char *passwordOTA = "OTA password";
     const char *version = "0.1.0";

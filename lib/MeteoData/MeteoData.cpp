@@ -9,6 +9,8 @@ float MeteoData::outdoorTemperature;
 float MeteoData::outdoorHumidity;
 float MeteoData::bedroomTemperature;
 float MeteoData::bedroomHumidity;
+float MeteoData::pantryTemperature;
+float MeteoData::pantryHumidity;
 
 // Initialize and get meteorological data
 void MeteoData::initialize(void)
@@ -67,6 +69,19 @@ void MeteoData::setBedroomData(float temperature, float humidity)
         Serial.println("°C - bedroom data temperature");
         Serial.print(humidity);
         Serial.println("% - bedroom data humidity");
+    }
+}
+
+void MeteoData::setPantryData(float temperature, float humidity)
+{
+    if (temperature && humidity)
+    {
+        pantryTemperature = temperature;
+        pantryHumidity = humidity;
+        Serial.print(temperature);
+        Serial.println("°C - pantry data temperature");
+        Serial.print(humidity);
+        Serial.println("% - pantry data humidity");
     }
 }
 

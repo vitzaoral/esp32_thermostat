@@ -151,6 +151,13 @@ void InternetConnection::setBedroomMeteoData()
     MeteoData::setBedroomData(temperature, humidity);
 }
 
+void InternetConnection::setPantryMeteoData()
+{
+    float temperature = getFloatFromBlynkUrl(String(settings.blynkAuthPantry), V1);
+    float humidity = getFloatFromBlynkUrl(String(settings.blynkAuthPantry), V2);
+    MeteoData::setPantryData(temperature, humidity);
+}
+
 // Initialize connection to Blynk. Return true if connection is successful.
 bool InternetConnection::initializeBlynk(void)
 {

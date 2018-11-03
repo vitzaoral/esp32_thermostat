@@ -46,7 +46,7 @@ void readOtherSensorsMeteoData()
 {
     connection.setOutdoorMeteoData();
     connection.setBedroomMeteoData();
-    // TODO kumbal
+    connection.setPantryMeteoData();
     Display::printSensorsMeteoData();
 }
 

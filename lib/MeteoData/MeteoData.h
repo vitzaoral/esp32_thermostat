@@ -14,10 +14,13 @@ class MeteoData
     static float outdoorHumidity;
     static float bedroomTemperature;
     static float bedroomHumidity;
+    static float pantryTemperature;
+    static float pantryHumidity;
 
     static void setData(void);
     static void setOutdoorData(float, float);
     static void setBedroomData(float, float);
+    static void setPantryData(float, float);
     static bool dataAreValid(void);
 };
 

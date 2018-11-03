@@ -159,6 +159,7 @@ void Display::printWifiStatusAndPrepareTemplate()
 
     if (WiFi.status() == WL_CONNECTED)
     {
+        // TODO: verze natvrdo, cist ze setings
         tft.drawString("Verze: 1.0", xPos, 100, GFXFF);
         tft.setTextColor(TFT_GREEN, BACKGROUND_COLOR);
         tft.drawString("WiFi OK", xPos, 140, GFXFF);
@@ -230,8 +231,7 @@ void Display::displayMeteoData(float temperature, int humidity, int offsetY)
 void Display::printSensorsMeteoData()
 {
     displayMeteoData(MeteoData::bedroomTemperature, MeteoData::bedroomHumidity, DATA_2_OFFSET_Y);
-    // TODO: kumbal
-    displayMeteoData(0, 0, DATA_3_OFFSET_Y);
+    displayMeteoData(MeteoData::pantryTemperature, MeteoData::pantryHumidity, DATA_3_OFFSET_Y);
     displayMeteoData(MeteoData::outdoorTemperature, MeteoData::outdoorHumidity, DATA_4_OFFSET_Y);
 }
 

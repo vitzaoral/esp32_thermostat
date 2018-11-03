@@ -23,6 +23,7 @@ public:
   bool sendDataToBlynk();
   void setOutdoorMeteoData();
   void setBedroomMeteoData();
+  void setPantryMeteoData();
   void runBlynk();
   static void setStatusToBlynk(String, int);
   static void setIsHeatingToBlynk(bool);
