@@ -26,6 +26,7 @@ public:
   static void printProgressBar(int);
   static void prinTargetTemperature(int);
   static void printHeatingStatus(int, String);
+  static void checkDisplayClicked();
 
 private:
   static void testMissingFiles();

@@ -9,19 +9,22 @@
 InternetConnection connection;
 
 // intervals in miliseconds
-const int readMeteoDataInterval = 10000;
-const int readOtherSensorsMeteoDataInterval = 30000;
-const int sendDataToBlynkInterval = 60000;
+const int readMeteoDataInterval = 28523;
+const int readOtherSensorsMeteoDataInterval = 65123;
+const int sendDataToBlynkInterval = 60321;
+const int checkDisplayClickedInterval = 43;
 
 void readMeteoData();
 void readOtherSensorsMeteoData();
 void sendDataToBlynk();
 void controllThermostat();
+void checkDisplayClicked();
 
 Ticker timerReadMeteoData(readMeteoData, readMeteoDataInterval);
 Ticker timerSendDataToBlynk(sendDataToBlynk, sendDataToBlynkInterval);
 Ticker timerReadOtherSensorsMeteoData(readOtherSensorsMeteoData, readOtherSensorsMeteoDataInterval);
 Ticker timerControllThermostat(controllThermostat, CONTROLL_THERMOSTAT_INTERVAL * 1000);
+Ticker timerCheckDisplayClicked(checkDisplayClicked, checkDisplayClickedInterval);
 
 // Connections to APIs are OK
 bool apisAreConnected = false;
@@ -50,7 +53,8 @@ void readOtherSensorsMeteoData()
     Display::printSensorsMeteoData();
 }
 
-void controllThermostat() {
+void controllThermostat()
+{
     ThermostatStatus status = Thermostat::controllThermostat();
 
     InternetConnection::setStatusToBlynk(status.message, status.color);
@@ -80,12 +84,18 @@ void sendDataToBlynk()
     }
 }
 
+void checkDisplayClicked()
+{
+    Display::checkDisplayClicked();
+}
+
 void startTimers()
 {
     timerReadMeteoData.start();
     timerReadOtherSensorsMeteoData.start();
     timerSendDataToBlynk.start();
     timerControllThermostat.start();
+    timerCheckDisplayClicked.start();
 }
 
 void updateTimers()
@@ -94,6 +104,7 @@ void updateTimers()
     timerReadOtherSensorsMeteoData.update();
     timerSendDataToBlynk.update();
     timerControllThermostat.update();
+    timerCheckDisplayClicked.update();
 }
 
 void setup()

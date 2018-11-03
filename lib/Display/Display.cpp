@@ -268,3 +268,37 @@ void Display::printHeatingStatus(int color, String message)
 
     tft.unloadFont();
 }
+
+void Display::checkDisplayClicked()
+{
+  uint16_t x = 0, y = 0;
+  boolean pressed = tft.getTouch(&x, &y);
+  if (pressed)
+  {
+    if (y >= 35 && y <= 70)
+    {
+      if (x >= 200 && x <= 245)
+      {
+        // temperature minus
+        Serial.print(" MINUS ");
+      }
+      else if (x >= 260 && x <= 310)
+      {
+        // temperature plus
+        Serial.print(" PLUS ");
+        int x = random(30,99);
+        Display::prinTargetTemperature(x);
+
+      }
+    }
+    else if (y <= 20 && x >= 75 && x <= 245)
+    {
+      // heating switch on/off
+      Serial.print(" TOPI/NETOPI ");
+    }
+
+    // Serial.print(String(x));
+    // Serial.print(" ");
+    // Serial.println(String(y));
+  }
+}

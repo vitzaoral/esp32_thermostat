@@ -13,8 +13,6 @@ ThermostatStatus Thermostat::controllThermostat()
 {
     ThermostatStatus status;
 
-    MeteoData::setData();
-
     if (MeteoData::dataAreValid())
     {
         // heating is enabled
