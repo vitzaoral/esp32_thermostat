@@ -1,6 +1,7 @@
 #include <Thermostat.h>
 
 int timer = 0;
+String oldValue = "";
 
 void Thermostat::initialize()
 {
@@ -83,6 +84,12 @@ ThermostatStatus Thermostat::controllThermostat()
         timer = 0;
     }
 
-    Display::printHeatingStatus(status.color, status.message);
+    // show only change (prevent display blinking)
+    if (oldValue != status.message)
+    {
+        Display::printHeatingStatus(status.color, status.message);
+    }
+
+    oldValue = status.message;
     return status;
 }

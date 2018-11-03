@@ -159,7 +159,7 @@ void Display::printWifiStatusAndPrepareTemplate()
 
     if (WiFi.status() == WL_CONNECTED)
     {
-        // TODO: verze natvrdo, cist ze setings
+        // TODO: verze natvrdo, cist ze settings
         tft.drawString("Verze: 1.0", xPos, 100, GFXFF);
         tft.setTextColor(TFT_GREEN, BACKGROUND_COLOR);
         tft.drawString("WiFi OK", xPos, 140, GFXFF);
