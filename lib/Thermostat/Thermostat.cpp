@@ -13,7 +13,7 @@ ThermostatStatus Thermostat::controllThermostat()
 {
     ThermostatStatus status;
 
-    if (MeteoData::dataAreValid())
+    if (MeteoData::shtDataAreValid())
     {
         // heating is enabled
         if (EEPROM.read(1) == true)

@@ -166,7 +166,6 @@ void Display::printWifiStatusAndPrepareTemplate()
         tft.drawString("IP " + WiFi.localIP().toString(), xPos, 170, GFXFF);
         tft.drawString("Signál " + String(WiFi.RSSI()) + "dBi", xPos, 200, GFXFF);
         tft.setTextColor(TFT_ORANGE, BACKGROUND_COLOR);
-        
 
         delay(3000);
         Display::prepareTemplate();
@@ -185,6 +184,7 @@ void Display::printProgressBar(int percentage)
     ui.drawProgressBar(10, 225, 300, 15, percentage, TFT_WHITE, TFT_BLUE);
 }
 
+// Return the whole and the decimal number of the number
 temperatureParts Display::getTEmperatureParts(float temperature)
 {
     temperatureParts parts;
@@ -230,14 +230,26 @@ void Display::displayMeteoData(float temperature, int humidity, int offsetY)
 
 void Display::printSensorsMeteoData()
 {
-    displayMeteoData(MeteoData::bedroomTemperature, MeteoData::bedroomHumidity, DATA_2_OFFSET_Y);
-    displayMeteoData(MeteoData::pantryTemperature, MeteoData::pantryHumidity, DATA_3_OFFSET_Y);
-    displayMeteoData(MeteoData::outdoorTemperature, MeteoData::outdoorHumidity, DATA_4_OFFSET_Y);
+    if (MeteoData::bedroomDataAreValid())
+    {
+        displayMeteoData(MeteoData::bedroomTemperature, MeteoData::bedroomHumidity, DATA_2_OFFSET_Y);
+    }
+    if (MeteoData::pantryDataAreValid())
+    {
+        displayMeteoData(MeteoData::pantryTemperature, MeteoData::pantryHumidity, DATA_3_OFFSET_Y);
+    }
+    if (MeteoData::outdoorDataAreValid())
+    {
+        displayMeteoData(MeteoData::outdoorTemperature, MeteoData::outdoorHumidity, DATA_4_OFFSET_Y);
+    }
 }
 
 void Display::printLocalMeteoData()
 {
-    displayMeteoData(MeteoData::shtTemperature, MeteoData::shtHumidity, DATA_1_OFFSET_Y);
+    if (MeteoData::shtDataAreValid())
+    {
+        displayMeteoData(MeteoData::shtTemperature, MeteoData::shtHumidity, DATA_1_OFFSET_Y);
+    }
 
     // TODO: nejak poresit define konstanty - do nejakeho souboru a linkovat vsude?
     int requiredTemp = EEPROM.read(2);
@@ -271,34 +283,36 @@ void Display::printHeatingStatus(int color, String message)
 
 void Display::checkDisplayClicked()
 {
-  uint16_t x = 0, y = 0;
-  boolean pressed = tft.getTouch(&x, &y);
-  if (pressed)
-  {
-    if (y >= 35 && y <= 70)
+    // TODO....
+    uint16_t x = 0, y = 0;
+    boolean pressed = tft.getTouch(&x, &y);
+    if (pressed)
     {
-      if (x >= 200 && x <= 245)
-      {
-        // temperature minus
-        Serial.print(" MINUS ");
-      }
-      else if (x >= 260 && x <= 310)
-      {
-        // temperature plus
-        Serial.print(" PLUS ");
-        int x = random(30,99);
-        Display::prinTargetTemperature(x);
+        if (y >= 35 && y <= 70)
+        {
+            if (x >= 200 && x <= 245)
+            {
+                // temperature minus
+                Serial.print(" MINUS ");
+            }
+            else if (x >= 260 && x <= 310)
+            {
+                // temperature plus
+                Serial.print(" PLUS ");
 
-      }
-    }
-    else if (y <= 20 && x >= 75 && x <= 245)
-    {
-      // heating switch on/off
-      Serial.print(" TOPI/NETOPI ");
-    }
+                // TODO....
+                int x = random(30, 99);
+                Display::prinTargetTemperature(x);
+            }
+        }
+        else if (y <= 20 && x >= 75 && x <= 245)
+        {
+            // heating switch on/off
+            Serial.print(" TOPI/NETOPI ");
+        }
 
-    // Serial.print(String(x));
-    // Serial.print(" ");
-    // Serial.println(String(y));
-  }
+        // Serial.print(String(x));
+        // Serial.print(" ");
+        // Serial.println(String(y));
+    }
 }

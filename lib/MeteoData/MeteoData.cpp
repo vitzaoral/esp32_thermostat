@@ -85,8 +85,30 @@ void MeteoData::setPantryData(float temperature, float humidity)
     }
 }
 
-bool MeteoData::dataAreValid(void)
+// local sensor data are valid
+bool MeteoData::shtDataAreValid(void)
 {
     return shtTemperature <= 50.0 && shtTemperature >= 0 &&
            shtHumidity <= 100.0 && shtHumidity >= 0.0;
+}
+
+// bedroom sensor data are valid
+bool MeteoData::bedroomDataAreValid(void)
+{
+    return bedroomTemperature <= 50.0 && bedroomTemperature >= 0 &&
+           bedroomHumidity <= 100.0 && bedroomHumidity >= 0.0;
+}
+
+// pantry sensor data are valid
+bool MeteoData::pantryDataAreValid(void)
+{
+    return pantryTemperature <= 50.0 && pantryTemperature >= 0 &&
+           pantryHumidity <= 100.0 && pantryHumidity >= 0.0;
+}
+
+// outdoor sensor data are valid
+bool MeteoData::outdoorDataAreValid(void)
+{
+    return outdoorTemperature <= 50.0 && outdoorTemperature >= 0 &&
+           outdoorHumidity <= 100.0 && outdoorHumidity >= 0.0;
 }

@@ -21,7 +21,10 @@ class MeteoData
     static void setOutdoorData(float, float);
     static void setBedroomData(float, float);
     static void setPantryData(float, float);
-    static bool dataAreValid(void);
+    static bool shtDataAreValid(void);
+    static bool bedroomDataAreValid(void);
+    static bool outdoorDataAreValid(void);
+    static bool pantryDataAreValid(void);
 };
 
 #endif
