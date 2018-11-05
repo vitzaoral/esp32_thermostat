@@ -34,6 +34,7 @@ private:
   static void displayMeteoData(float temperature, int humidity, int offsetY);
   static void printTempleate(int offsetY, String description);
   static void prepareTemplate();
+  static void setTargetTemperatureToEEPROMAndDisplay(bool);
   static temperatureParts getTEmperatureParts(float temperature);
 };
 

@@ -13,18 +13,21 @@ const int readMeteoDataInterval = 28523;
 const int readOtherSensorsMeteoDataInterval = 65123;
 const int sendDataToBlynkInterval = 60321;
 const int checkDisplayClickedInterval = 43;
+const int checkWasTemperatureDisplaySetInterval = 16000;
 
 void readMeteoData();
 void readOtherSensorsMeteoData();
 void sendDataToBlynk();
 void controllThermostat();
 void checkDisplayClicked();
+void checkWasTemperatureDisplaySet();
 
 Ticker timerReadMeteoData(readMeteoData, readMeteoDataInterval);
 Ticker timerSendDataToBlynk(sendDataToBlynk, sendDataToBlynkInterval);
 Ticker timerReadOtherSensorsMeteoData(readOtherSensorsMeteoData, readOtherSensorsMeteoDataInterval);
 Ticker timerControllThermostat(controllThermostat, CONTROLL_THERMOSTAT_INTERVAL * 1000);
 Ticker timerCheckDisplayClicked(checkDisplayClicked, checkDisplayClickedInterval);
+Ticker timerCheckWasTemperatureDisplaySet(checkWasTemperatureDisplaySet, checkWasTemperatureDisplaySetInterval);
 
 // Connections to APIs are OK
 bool apisAreConnected = false;
@@ -51,6 +54,20 @@ void readOtherSensorsMeteoData()
     connection.setBedroomMeteoData();
     connection.setPantryMeteoData();
     Display::printSensorsMeteoData();
+}
+
+void checkWasTemperatureDisplaySet()
+{
+    if (EEPROM.read(EEPROM_TARGET_HEATING_TEMPERATURE_DISPLAY_SET_ADDRESS) == true)
+    {
+        int targetTemperature = EEPROM.read(EEPROM_TARGET_HEATING_TEMPERATURE_ADDRESS);
+        InternetConnection::setTargetTemperatureToBlynk(targetTemperature, true);
+        Serial.print("Temperature setted on display: ");
+        Serial.println(targetTemperature);
+
+        EEPROM.write(EEPROM_TARGET_HEATING_TEMPERATURE_DISPLAY_SET_ADDRESS, 0);
+        EEPROM.commit();
+    }
 }
 
 void controllThermostat()
@@ -96,6 +113,7 @@ void startTimers()
     timerSendDataToBlynk.start();
     timerControllThermostat.start();
     timerCheckDisplayClicked.start();
+    timerCheckWasTemperatureDisplaySet.start();
 }
 
 void updateTimers()
@@ -105,12 +123,16 @@ void updateTimers()
     timerSendDataToBlynk.update();
     timerControllThermostat.update();
     timerCheckDisplayClicked.update();
+    timerCheckWasTemperatureDisplaySet.update();
 }
 
 void setup()
 {
-    // Initialize two bytes: 1. device status (enabled/disabled) and 2. required temperature
-    EEPROM.begin(2);
+    // Initialize three bytes:
+    // 1. device status (enabled/disabled)
+    // 2. required temperature
+    // 3. was setted targe temperature from display
+    EEPROM.begin(3);
     Serial.begin(9600);
 
     // initialize components

@@ -22,6 +22,8 @@ public:
   void setBedroomMeteoData();
   void setPantryMeteoData();
   void runBlynk();
+  
+  static void setTargetTemperatureToBlynk(int, bool);
   static void setStatusToBlynk(String, int);
   static void setIsHeatingToBlynk(bool);
 

@@ -2,11 +2,13 @@
 #include <InternetConnection.h>
 
 // Blynk Pins:
+// V0 - enabled/disabled thermostat
 // V1 - shtTemperature
 // V2 - shtHumidity
 // V3 - WiFi IP address
 // V4 - WiFi rssi
-// V5 - target temperature setted from Blynk app
+// V5 - target temperature setted from/to Blynk app (text)
+// V10 - target temperature setted from/to Blynk app (slider)
 // V6 - heating status
 // V7 - is heating graph value (true / false)
 
@@ -14,6 +16,7 @@ void setToEEPROM(int address, int value)
 {
     // address 1 - enable/disable heating
     // address 2 - target temperature
+    // address 3 - set target temperature from device to Blynk (temperature was set by click to display)
     EEPROM.write(address, value);
     EEPROM.commit();
 }
@@ -37,7 +40,7 @@ BLYNK_WRITE(V0)
 BLYNK_WRITE(V10)
 {
     int requiredTemp = param.asInt();
-    Blynk.virtualWrite(V5, requiredTemp);
+    InternetConnection::setTargetTemperatureToBlynk(requiredTemp, false);
     Serial.println("Target Temperature is " + String(requiredTemp) + "°C");
     setToEEPROM(EEPROM_TARGET_HEATING_TEMPERATURE_ADDRESS, requiredTemp);
     callThermostatControllAndSetStatusToBlynk();
@@ -197,6 +200,16 @@ void InternetConnection::setStatusToBlynk(String status, int color)
 
     Blynk.virtualWrite(V6, status);
     Blynk.setProperty(V6, "color", colorValue);
+}
+
+// From display to Blynk
+void InternetConnection::setTargetTemperatureToBlynk(int temperature, bool setSlider)
+{
+    Blynk.virtualWrite(V5, temperature);
+    if (setSlider)
+    {
+        Blynk.virtualWrite(V10, temperature);
+    }
 }
 
 // Send isHeating status to Blynk

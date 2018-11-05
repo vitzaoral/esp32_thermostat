@@ -295,22 +295,19 @@ void Display::checkDisplayClicked()
             {
                 // temperature minus
                 Serial.print(" MINUS ");
+                Display::setTargetTemperatureToEEPROMAndDisplay(false);
             }
             else if (x >= 260 && x <= 310)
             {
                 // temperature plus
                 Serial.print(" PLUS ");
-
-                // TODO problem cyklicke zavislosti mezi display/internetConnection
-                // TODO: na blynk se da neco poslat jen jednou za 15sec, jak se bude resit kdyz budu moc klikat?
-                // TODO: resenim asi bude narvat to do nejake globalni promenne nebo EEPROMU (dve hodnoty value/bool) a cist to v nejakem timeru v mainu jednou za 15sec
-                int x = random(30, 99);
-                Display::prinTargetTemperature(x);                
+                Display::setTargetTemperatureToEEPROMAndDisplay(true);
             }
         }
         else if (y <= 20 && x >= 75 && x <= 245)
         {
             // heating switch on/off
+            // TODO:
             Serial.print(" TOPI/NETOPI ");
         }
 
@@ -319,3 +316,28 @@ void Display::checkDisplayClicked()
         // Serial.println(String(y));
     }
 }
+
+// TODO: vice stejnych fci, jak definovat na jednom miste??
+void setToEEPROM2(int address, int value)
+{
+    // address 1 - enable/disable heating
+    // address 2 - target temperature
+    // address 3 - set target temperature from device to Blynk (temperature was set by click to display)
+    EEPROM.write(address, value);
+    EEPROM.commit();
+}
+
+void Display::setTargetTemperatureToEEPROMAndDisplay(bool plus)
+{
+    int actualTemp = EEPROM.read(EEPROM_TARGET_HEATING_TEMPERATURE_ADDRESS);
+    int newTemperature = plus ? actualTemp + 1 : actualTemp - 1;
+
+    if (newTemperature <= MAX_TEMPERATURE_FROM_DISPLAY && newTemperature >= MIN_TEMPERATURE_FROM_DISPLAY)
+    {
+        setToEEPROM2(EEPROM_TARGET_HEATING_TEMPERATURE_ADDRESS, newTemperature);
+        setToEEPROM2(EEPROM_TARGET_HEATING_TEMPERATURE_DISPLAY_SET_ADDRESS, 1);
+        Display::prinTargetTemperature(newTemperature);
+    }
+}
+
+
