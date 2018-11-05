@@ -1,6 +1,7 @@
 #ifndef __Display_H
 #define __Display_H
 
+#include "../../src/settings.cpp"
 #include <SPI.h>
 #include <TFT_eSPI.h>
 #include <GfxUi.h>

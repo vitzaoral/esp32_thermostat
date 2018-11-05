@@ -16,9 +16,9 @@ ThermostatStatus Thermostat::controllThermostat()
     if (MeteoData::shtDataAreValid())
     {
         // heating is enabled
-        if (EEPROM.read(1) == true)
+        if (EEPROM.read(EEPROM_ENABLED_DISABLED_HEATING_ADDRESS) == true)
         {
-            int requiredTemperature = EEPROM.read(2);
+            int requiredTemperature = EEPROM.read(EEPROM_TARGET_HEATING_TEMPERATURE_ADDRESS);
             if (requiredTemperature >= 10 && requiredTemperature <= 25 && MeteoData::shtTemperature <= requiredTemperature)
             {
                 // if heating is OFF

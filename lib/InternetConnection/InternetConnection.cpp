@@ -1,7 +1,5 @@
-#include "../../src/settings.cpp"
 #include <BlynkSimpleEsp32.h>
 #include <InternetConnection.h>
-#include <Thermostat.h>
 
 // Blynk Pins:
 // V1 - shtTemperature

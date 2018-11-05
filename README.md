@@ -6,6 +6,11 @@ WiFi thermostat based on the ESP32 (Espressif WROOM-32 Developer Kit), using SHT
 
 > To build a project, you need to download all the necessary libraries and create the *settings.cpp* file in the src folder with specific settings:
 ```c++
+// address 1 - enable/disable heating
+#define EEPROM_ENABLED_DISABLED_HEATING_ADDRESS 1
+// address 2 - target temperature
+#define EEPROM_TARGET_HEATING_TEMPERATURE_ADDRESS 2
+
 // Thermostat project settings
 struct Settings
 {

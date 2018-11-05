@@ -29,6 +29,9 @@ TFT_eSPI tft = TFT_eSPI();
 // Other components (progress bar)
 GfxUi ui = GfxUi(&tft);
 
+// app settings
+Settings settingsDisplay;
+
 // Drawing pictures
 JpegUtils jpegUtils = JpegUtils(&tft);
 
@@ -159,8 +162,7 @@ void Display::printWifiStatusAndPrepareTemplate()
 
     if (WiFi.status() == WL_CONNECTED)
     {
-        // TODO: verze natvrdo, cist ze settings
-        tft.drawString("Verze: 1.0", xPos, 100, GFXFF);
+        tft.drawString(settingsDisplay.version, xPos, 100, GFXFF);
         tft.setTextColor(TFT_GREEN, BACKGROUND_COLOR);
         tft.drawString("WiFi OK", xPos, 140, GFXFF);
         tft.drawString("IP " + WiFi.localIP().toString(), xPos, 170, GFXFF);
@@ -251,8 +253,7 @@ void Display::printLocalMeteoData()
         displayMeteoData(MeteoData::shtTemperature, MeteoData::shtHumidity, DATA_1_OFFSET_Y);
     }
 
-    // TODO: nejak poresit define konstanty - do nejakeho souboru a linkovat vsude?
-    int requiredTemp = EEPROM.read(2);
+    int requiredTemp = EEPROM.read(EEPROM_TARGET_HEATING_TEMPERATURE_ADDRESS);
     Display::prinTargetTemperature(requiredTemp);
 }
 
@@ -300,9 +301,11 @@ void Display::checkDisplayClicked()
                 // temperature plus
                 Serial.print(" PLUS ");
 
-                // TODO....
+                // TODO problem cyklicke zavislosti mezi display/internetConnection
+                // TODO: na blynk se da neco poslat jen jednou za 15sec, jak se bude resit kdyz budu moc klikat?
+                // TODO: resenim asi bude narvat to do nejake globalni promenne nebo EEPROMU (dve hodnoty value/bool) a cist to v nejakem timeru v mainu jednou za 15sec
                 int x = random(30, 99);
-                Display::prinTargetTemperature(x);
+                Display::prinTargetTemperature(x);                
             }
         }
         else if (y <= 20 && x >= 75 && x <= 245)

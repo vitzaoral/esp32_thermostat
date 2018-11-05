@@ -1,6 +1,7 @@
 #ifndef __Thermostat_H
 #define __Thermostat_H
 
+#include "../../src/settings.cpp"
 #include <Arduino.h>
 #include <MeteoData.h>
 #include <EEPROM.h>
