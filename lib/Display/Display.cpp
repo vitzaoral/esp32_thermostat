@@ -284,11 +284,11 @@ void Display::printHeatingStatus(int color, String message)
 
 void Display::checkDisplayClicked()
 {
-    // TODO....
     uint16_t x = 0, y = 0;
     boolean pressed = tft.getTouch(&x, &y);
     if (pressed)
     {
+        // plus / minus temperature buttons
         if (y >= 35 && y <= 70)
         {
             if (x >= 200 && x <= 245)
@@ -307,8 +307,8 @@ void Display::checkDisplayClicked()
         else if (y <= 20 && x >= 75 && x <= 245)
         {
             // heating switch on/off
-            // TODO:
-            Serial.print(" TOPI/NETOPI ");
+            Serial.print(" HEATING ON/OFF ");
+            Display::setHeatingEnableToEEPROMAndDisplay();
         }
 
         // Serial.print(String(x));
@@ -320,9 +320,6 @@ void Display::checkDisplayClicked()
 // TODO: vice stejnych fci, jak definovat na jednom miste??
 void setToEEPROM2(int address, int value)
 {
-    // address 1 - enable/disable heating
-    // address 2 - target temperature
-    // address 3 - set target temperature from device to Blynk (temperature was set by click to display)
     EEPROM.write(address, value);
     EEPROM.commit();
 }
@@ -340,4 +337,19 @@ void Display::setTargetTemperatureToEEPROMAndDisplay(bool plus)
     }
 }
 
+void Display::setHeatingEnableToEEPROMAndDisplay()
+{
+    bool heatingEnabled = EEPROM.read(EEPROM_ENABLED_DISABLED_HEATING_ADDRESS);
+    bool newValue = !heatingEnabled;
+    setToEEPROM2(EEPROM_ENABLED_DISABLED_HEATING_ADDRESS, newValue ? 1 : 0);
+    setToEEPROM2(EEPROM_ENABLED_DISABLED_HEATING_DISPLAY_SET_ADDRESS, 1);
 
+    if (newValue)
+    {
+        Display::printHeatingStatus(TFT_GREEN, String("ZAPNUTO (čeká)"));
+    }
+    else
+    {
+        Display::printHeatingStatus(TFT_RED, String("VYPNUTO (čeká)"));
+    }
+}

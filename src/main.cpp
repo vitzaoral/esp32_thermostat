@@ -13,7 +13,8 @@ const int readMeteoDataInterval = 28523;
 const int readOtherSensorsMeteoDataInterval = 65123;
 const int sendDataToBlynkInterval = 60321;
 const int checkDisplayClickedInterval = 43;
-const int checkWasTemperatureDisplaySetInterval = 16000;
+const int checkWasTemperatureDisplaySetInterval = 15321;
+const int checkWasHeatingDisplaySetInterval = 15800;
 
 void readMeteoData();
 void readOtherSensorsMeteoData();
@@ -21,6 +22,7 @@ void sendDataToBlynk();
 void controllThermostat();
 void checkDisplayClicked();
 void checkWasTemperatureDisplaySet();
+void checkWasHeatingDisplaySet();
 
 Ticker timerReadMeteoData(readMeteoData, readMeteoDataInterval);
 Ticker timerSendDataToBlynk(sendDataToBlynk, sendDataToBlynkInterval);
@@ -28,6 +30,7 @@ Ticker timerReadOtherSensorsMeteoData(readOtherSensorsMeteoData, readOtherSensor
 Ticker timerControllThermostat(controllThermostat, CONTROLL_THERMOSTAT_INTERVAL * 1000);
 Ticker timerCheckDisplayClicked(checkDisplayClicked, checkDisplayClickedInterval);
 Ticker timerCheckWasTemperatureDisplaySet(checkWasTemperatureDisplaySet, checkWasTemperatureDisplaySetInterval);
+Ticker timerCheckWasHeatingDisplaySet(checkWasHeatingDisplaySet, checkWasHeatingDisplaySetInterval);
 
 // Connections to APIs are OK
 bool apisAreConnected = false;
@@ -62,10 +65,24 @@ void checkWasTemperatureDisplaySet()
     {
         int targetTemperature = EEPROM.read(EEPROM_TARGET_HEATING_TEMPERATURE_ADDRESS);
         InternetConnection::setTargetTemperatureToBlynk(targetTemperature, true);
-        Serial.print("Temperature setted on display: ");
+        Serial.print("Temperature setted on display to: ");
         Serial.println(targetTemperature);
 
         EEPROM.write(EEPROM_TARGET_HEATING_TEMPERATURE_DISPLAY_SET_ADDRESS, 0);
+        EEPROM.commit();
+    }
+}
+
+void checkWasHeatingDisplaySet()
+{
+    if (EEPROM.read(EEPROM_ENABLED_DISABLED_HEATING_DISPLAY_SET_ADDRESS) == true)
+    {
+        bool enabled = EEPROM.read(EEPROM_ENABLED_DISABLED_HEATING_ADDRESS);
+        InternetConnection::setHeatingEnabledDisabledToBlynk(enabled);
+        Serial.print("Heating enabled/disabled setted on display to: ");
+        Serial.println(enabled);
+
+        EEPROM.write(EEPROM_ENABLED_DISABLED_HEATING_DISPLAY_SET_ADDRESS, 0);
         EEPROM.commit();
     }
 }
@@ -114,6 +131,7 @@ void startTimers()
     timerControllThermostat.start();
     timerCheckDisplayClicked.start();
     timerCheckWasTemperatureDisplaySet.start();
+    timerCheckWasHeatingDisplaySet.start();
 }
 
 void updateTimers()
@@ -124,15 +142,17 @@ void updateTimers()
     timerControllThermostat.update();
     timerCheckDisplayClicked.update();
     timerCheckWasTemperatureDisplaySet.update();
+    timerCheckWasHeatingDisplaySet.update();
 }
 
 void setup()
 {
-    // Initialize three bytes:
+    // Initialize 10 addresses:
     // 1. device status (enabled/disabled)
     // 2. required temperature
     // 3. was setted targe temperature from display
-    EEPROM.begin(3);
+    // 4. was setted enabled/disabled heating from display
+    EEPROM.begin(10);
     Serial.begin(9600);
 
     // initialize components

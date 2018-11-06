@@ -35,6 +35,7 @@ private:
   static void printTempleate(int offsetY, String description);
   static void prepareTemplate();
   static void setTargetTemperatureToEEPROMAndDisplay(bool);
+  static void setHeatingEnableToEEPROMAndDisplay();
   static temperatureParts getTEmperatureParts(float temperature);
 };
 

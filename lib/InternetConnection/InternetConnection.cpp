@@ -14,9 +14,6 @@
 
 void setToEEPROM(int address, int value)
 {
-    // address 1 - enable/disable heating
-    // address 2 - target temperature
-    // address 3 - set target temperature from device to Blynk (temperature was set by click to display)
     EEPROM.write(address, value);
     EEPROM.commit();
 }
@@ -210,6 +207,12 @@ void InternetConnection::setTargetTemperatureToBlynk(int temperature, bool setSl
     {
         Blynk.virtualWrite(V10, temperature);
     }
+}
+
+// From display to Blynk
+void InternetConnection::setHeatingEnabledDisabledToBlynk(bool enabled)
+{
+    Blynk.virtualWrite(V0, enabled);
 }
 
 // Send isHeating status to Blynk
