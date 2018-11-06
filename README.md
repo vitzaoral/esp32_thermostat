@@ -10,6 +10,13 @@ WiFi thermostat based on the ESP32 (Espressif WROOM-32 Developer Kit), using SHT
 #define EEPROM_ENABLED_DISABLED_HEATING_ADDRESS 1
 // address 2 - target temperature
 #define EEPROM_TARGET_HEATING_TEMPERATURE_ADDRESS 2
+// address 3 - target temperature was set from display
+#define EEPROM_TARGET_HEATING_TEMPERATURE_DISPLAY_SET_ADDRESS 3
+// address 4 - heating enabled/disabled was set from display
+#define EEPROM_ENABLED_DISABLED_HEATING_DISPLAY_SET_ADDRESS 4
+
+#define MAX_TEMPERATURE_FROM_DISPLAY 25
+#define MIN_TEMPERATURE_FROM_DISPLAY 10
 
 // Thermostat project settings
 struct Settings
