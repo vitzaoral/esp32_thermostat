@@ -1,7 +1,7 @@
 CREATE_FONT
 1. TFT font ktery chci nahrát do složky data
 2. v Create_font.pde skriptu správnì font pojmenovat, nastavit velikost kterou chci
-3. pustit
+3. pustit skript Create_font.pde
 4. do složky FontFiles se vygeneruje .vlw soubor
 
 5. všechny soubory (fonty, obrázky) které chci nahrát do ESP32 pøetáhnout do složky data kde je sketch (sketch_oct30b.ino)

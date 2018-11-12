@@ -91,7 +91,7 @@ void Display::initialize()
 
     if (!SPIFFS.begin())
     {
-        Serial.println("SPIFFS initialisation failed!");
+        Serial.println("SPIFFS initialisation failed! Maybe you forgot create file system and loaded files to ESP32.");
         while (1)
             yield(); // Stay here twiddling thumbs waiting
     }
