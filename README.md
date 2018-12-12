@@ -1,6 +1,6 @@
 # ESP32 thermostat witch touch LCD
 
-WiFi thermostat based on the ESP32 (Espressif WROOM-32 Developer Kit), using SHT3X(SHT31-D) temperature/humidity sensor and ILI 9341 TFT LCD Touch display. Data are sent to the Thingspeak server and to the Blynk. Thermostat can be controlled by the Blynk application or directly by touch on the LCD. Project is free to use, coded in C++, created in Visual Code with [PlatfomIO IDE](http://docs.platformio.org/en/latest/ide/vscode.html). 
+WiFi thermostat based on the ESP32 (Espressif WROOM-32 Developer Kit), using several SHT3X(SHT31-D) temperature/humidity sensor and ILI 9341 TFT LCD Touch display. Data are sent to the Blynk server. Thermostat can be controlled by the Blynk application from iPhone or directly by touch on the LCD. Project is free to use, coded in C++, created in Visual Code with [PlatfomIO IDE](http://docs.platformio.org/en/latest/ide/vscode.html). 
 
 **The project is not yet complete and is still being developed!**
 
@@ -61,6 +61,12 @@ When you have 5V relay, there is a need to think about 3.3V ESP32 pins. You can'
 * [Relay module shield](https://www.aliexpress.com/item/Free-Shipping-1PCS-5V-low-level-trigger-One-1-Channel-Relay-Module-interface-Board-Shield-For/32519570562.html)
 * [2.8" SPI TFT LCD Touch Panel](https://www.aliexpress.com/item/1pcs-J34-F85-240x320-2-8-SPI-TFT-LCD-Touch-Panel-Serial-Port-Module-with-PCB/32795636902.html)
 * [SHT3X (SHT-31D)](https://www.aliexpress.com/item/Free-shipping-SHT31-Temperature-SHT31-D-Humidity-Sensor-module-Breakout-Weather-for-Arduino/32706618932.html) temperature and humidity sensor
+* Button, Mosfet
 
 ### Schema:
 ![Schema](https://github.com/vitzaoral/esp32_thermostat/blob/master/schema/schema.png)
+
+### Finished project:
+How finished project work is shown on the [YouTube video](https://youtu.be/eb8HEu9pyTQ).
+
+[![YouTube video here](https://img.youtube.com/vi/eb8HEu9pyTQ/0.jpg)](https://youtu.be/eb8HEu9pyTQ "ESP32 thermostat - Click to Watch!")
