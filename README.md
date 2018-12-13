@@ -1,8 +1,6 @@
 # ESP32 thermostat witch touch LCD
 
-WiFi thermostat based on the ESP32 (Espressif WROOM-32 Developer Kit), using several SHT3X(SHT31-D) temperature/humidity sensor and ILI 9341 TFT LCD Touch display. Data are sent to the Blynk server. Thermostat can be controlled by the Blynk application from iPhone or directly by touch on the LCD. Project is free to use, coded in C++, created in Visual Code with [PlatfomIO IDE](http://docs.platformio.org/en/latest/ide/vscode.html). 
-
-**The project is not yet complete and is still being developed!**
+WiFi thermostat based on the ESP32 (Espressif WROOM-32 Developer Kit), using several SHT3X(SHT31-D) temperature/humidity sensor and ILI 9341 TFT LCD Touch display. Data are sent to the Blynk server. Thermostat can be controlled by the Blynk application from iPhone or directly by touch on the LCD. Project is free to use, coded in C++, created in Visual Code with [PlatfomIO IDE](http://docs.platformio.org/en/latest/ide/vscode.html).
 
 > To build a project, you need to download all the necessary libraries and create the *settings.cpp* file in the src folder with specific settings:
 ```c++
@@ -67,6 +65,6 @@ When you have 5V relay, there is a need to think about 3.3V ESP32 pins. You can'
 ![Schema](https://github.com/vitzaoral/esp32_thermostat/blob/master/schema/schema.png)
 
 ### Finished project:
-How finished project work is shown on the [YouTube video](https://youtu.be/eb8HEu9pyTQ).
+How the finished project works is shown in this [YouTube video](https://youtu.be/eb8HEu9pyTQ).
 
 [![YouTube video here](https://img.youtube.com/vi/eb8HEu9pyTQ/0.jpg)](https://youtu.be/eb8HEu9pyTQ "ESP32 thermostat - Click to Watch!")
